@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détail Produit - ShopCloud</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        indigo: { 
+                            50: '#f3eefc', 
+                            100: '#d8cbf7', 
+                            500: '#8e44ad', 
+                            600: '#6f42c1', 
+                            700: '#5a32a3' 
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between gap-8">
+                <a href="index.html" class="flex items-center gap-2 text-decoration-none">
+                    <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center text-white shadow-lg">
+                        <i class="fas fa-shopping-cart text-lg"></i>
+                    </div>
+                    <span class="text-xl font-bold text-indigo-600 tracking-tight">ShopCloud</span>
+                </a>
+                <div class="flex-1 max-w-2xl hidden md:block">
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" placeholder="Rechercher des produits..." class="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all shadow-sm bg-gray-50 focus:bg-white">
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="cart.html" class="relative p-3 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition-colors">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span class="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center border-2 border-white">3</span>
+                    </a>
+                    <a href="login.html" class="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all shadow-md shadow-indigo-200 font-medium">
+                        <i class="far fa-user"></i>
+                        <span>Connexion</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+            
+            <div class="space-y-4">
+                <div class="aspect-square bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800" alt="Main Product" class="w-full h-full object-cover">
+                </div>
+                <div class="grid grid-cols-4 gap-4">
+                    <div class="aspect-square bg-white rounded-xl border-2 border-indigo-600 overflow-hidden cursor-pointer p-1">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200" class="w-full h-full object-cover rounded-lg">
+                    </div>
+                    <div class="aspect-square bg-white rounded-xl border border-gray-200 overflow-hidden cursor-pointer hover:border-indigo-400 transition-colors">
+                        <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=200" class="w-full h-full object-cover">
+                    </div>
+                    <div class="aspect-square bg-white rounded-xl border border-gray-200 overflow-hidden cursor-pointer hover:border-indigo-400 transition-colors">
+                        <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=200" class="w-full h-full object-cover">
+                    </div>
+                    <div class="aspect-square bg-white rounded-xl border border-gray-200 overflow-hidden cursor-pointer hover:border-indigo-400 transition-colors">
+                        <img src="https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=200" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="mb-6">
+                    <span class="inline-block px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-xs font-bold uppercase tracking-wide mb-4 border border-indigo-100">
+                        <span id="p-category">...</span>
+                    </span>
+                    <h1 id="p-name" class="text-4xl font-extrabold text-gray-900 mb-4 leading-tight">...</h1>
+                    
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="flex items-center gap-1">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star-half-alt text-yellow-400"></i>
+                            <span class="text-gray-600 font-medium ml-1">(4.8)</span>
+                        </div>
+                        <span class="text-gray-400 text-sm border-l border-gray-300 pl-4">142 avis</span>
+                    </div>
+                </div>
+
+                <div id="p-price" class="text-4xl font-bold text-indigo-600 mb-8">...</div>
+
+                <div class="prose prose-gray mb-8 text-gray-600 leading-relaxed">
+                    <p id="p-desc">Chargement...</p>
+                </div>
+
+                <div class="grid grid-cols-3 gap-4 mb-8">
+                    <div class="flex flex-col items-center justify-center p-4 bg-white border border-gray-100 rounded-xl text-center shadow-sm">
+                        <i class="fas fa-truck text-indigo-600 text-2xl mb-2"></i>
+                        <div class="text-xs font-bold text-gray-900 uppercase">Livraison</div>
+                        <div class="text-xs text-gray-500">Gratuite</div>
+                    </div>
+                    <div class="flex flex-col items-center justify-center p-4 bg-white border border-gray-100 rounded-xl text-center shadow-sm">
+                        <i class="fas fa-shield-alt text-indigo-600 text-2xl mb-2"></i>
+                        <div class="text-xs font-bold text-gray-900 uppercase">Garantie</div>
+                        <div class="text-xs text-gray-500">2 ans</div>
+                    </div>
+                    <div class="flex flex-col items-center justify-center p-4 bg-white border border-gray-100 rounded-xl text-center shadow-sm">
+                        <i class="fas fa-undo text-indigo-600 text-2xl mb-2"></i>
+                        <div class="text-xs font-bold text-gray-900 uppercase">Retour</div>
+                        <div class="text-xs text-gray-500">30 jours</div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 mb-6">
+                    <div class="flex items-center border-2 border-gray-200 rounded-xl bg-white">
+                        <button class="px-4 py-3 hover:bg-gray-50 text-gray-500 transition-colors rounded-l-xl"><i class="fas fa-minus"></i></button>
+                        <input type="number" value="1" class="w-16 text-center border-none focus:ring-0 font-bold text-gray-900 bg-transparent p-0" readonly>
+                        <button class="px-4 py-3 hover:bg-gray-50 text-gray-500 transition-colors rounded-r-xl"><i class="fas fa-plus"></i></button>
+                    </div>
+                    <button id="add-btn" class="flex-1 px-8 py-4 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg hover:shadow-indigo-200 flex items-center justify-center gap-2">
+                        <i class="fas fa-shopping-bag"></i> Ajouter au panier
+                    </button>
+                </div>
+
+                <div class="flex gap-4">
+                    <button class="flex-1 py-3 border border-gray-200 rounded-xl text-gray-600 font-medium hover:bg-gray-50 hover:text-indigo-600 transition-colors flex items-center justify-center gap-2">
+                        <i class="far fa-heart"></i> Favoris
+                    </button>
+                    <button class="flex-1 py-3 border border-gray-200 rounded-xl text-gray-600 font-medium hover:bg-gray-50 hover:text-indigo-600 transition-colors flex items-center justify-center gap-2">
+                        <i class="fas fa-share-alt"></i> Partager
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <section class="border-t border-gray-200 pt-16">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8">Produits similaires</h2>
+            <div id="related-products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                </div>
+        </section>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000/api';
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id') || 1;
+
+        async function loadProduct() {
+            try {
+                const res = await fetch(`${API_URL}/products/${productId}`);
+                if(!res.ok) throw new Error("Product not found");
+                const p = await res.json();
+                renderProduct(p);
+            } catch (e) {
+                console.warn("Using Mock Data");
+                renderProduct({
+                    id: productId,
+                    name: 'Produit Démo',
+                    price: '99.99',
+                    description: 'Ceci est une description de produit simulée car l\'API est inaccessible.',
+                    category: 'Démo',
+                    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800'
+                });
+            }
+        }
+
+        function renderProduct(p) {
+            document.title = `${p.name} - ShopCloud`;
+            document.getElementById('p-name').innerText = p.name;
+            document.getElementById('p-price').innerText = parseFloat(p.price).toFixed(2) + ' €';
+            document.getElementById('p-desc').innerText = p.description || 'Aucune description disponible.';
+            document.getElementById('p-category').innerText = p.category;
+            
+            // Main Image
+            document.querySelector('img[alt="Main Product"]').src = p.image;
+
+            // Add to Cart Logic
+            document.getElementById('add-btn').onclick = () => {
+                let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                const existing = cart.find(item => item.id == p.id);
+                if (existing) existing.quantity++;
+                else cart.push({ id: p.id, name: p.name, price: p.price, quantity: 1 });
+                localStorage.setItem('cart', JSON.stringify(cart));
+                alert('Produit ajouté !');
+            };
+        }
+
+        // Related Products (Mock for now)
+        const relatedProducts = [
+            { id: 1, name: 'Produit similaire 1', price: '79,99 €', image: 'https://images.unsplash.com/photo-1524678606372-887e2794ef04?w=400' },
+            { id: 2, name: 'Produit similaire 2', price: '89,99 €', image: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400' },
+            { id: 3, name: 'Produit similaire 3', price: '69,99 €', image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400' },
+            { id: 4, name: 'Produit similaire 4', price: '99,99 €', image: 'https://images.unsplash.com/photo-1507473888900-52e1adad54cd?w=400' },
+        ];
+
+        document.getElementById('related-products').innerHTML = relatedProducts.map(p => `
+            <div class="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer group">
+                <div class="aspect-[4/3] bg-gray-100 overflow-hidden">
+                    <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                </div>
+                <div class="p-4">
+                    <h3 class="text-gray-900 font-bold mb-2 group-hover:text-indigo-600 transition-colors">${p.name}</h3>
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-indigo-600">${p.price}</span>
+                        <button class="p-2 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-colors">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        loadProduct();
+    </script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des boutiques - Admin ShopCloud</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        blue: { 50: '#eff6ff', 100: '#dbeafe', 600: '#2563eb', 700: '#1d4ed8' },
+                        indigo: { 600: '#4f46e5' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans">
+
+    <div class="flex min-h-screen">
+        
+        <aside class="w-64 bg-white border-r border-gray-200 flex-shrink-0 fixed h-full z-10">
+            <div class="p-6">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center text-white shadow-md">
+                        <i class="fas fa-shield-alt text-lg"></i>
+                    </div>
+                    <div>
+                        <div class="text-gray-900 font-bold">Admin Panel</div>
+                        <div class="text-xs text-gray-500 font-medium uppercase tracking-wide">Administrateur</div>
+                    </div>
+                </div>
+
+                <nav class="space-y-2">
+                    <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                        <i class="fas fa-th-large w-5 text-center"></i>
+                        <span>Tableau de bord</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                        <i class="fas fa-users w-5 text-center"></i>
+                        <span>Utilisateurs</span>
+                    </a>
+                    <a href="admin-stores.html" class="flex items-center gap-3 px-4 py-3 bg-blue-50 text-blue-700 rounded-lg transition-colors font-medium">
+                        <i class="fas fa-store w-5 text-center"></i>
+                        <span>Boutiques</span>
+                    </a>
+                    <a href="admin-products.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                        <i class="fas fa-box w-5 text-center"></i>
+                        <span>Produits</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                        <i class="fas fa-exclamation-triangle w-5 text-center"></i>
+                        <span>Signalements</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="absolute bottom-0 w-full p-6 border-t border-gray-100 bg-white">
+                <a href="login.html" onclick="localStorage.clear()" class="flex items-center gap-3 text-red-600 hover:bg-red-50 px-4 py-3 rounded-lg transition-colors font-medium">
+                    <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="flex-1 ml-64 p-8">
+            <div class="max-w-7xl mx-auto">
+                
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Gestion des boutiques</h1>
+                    <p class="text-gray-600">Gérez toutes les boutiques de la plateforme</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                        <div class="text-2xl font-bold text-gray-900 mb-1">1,234</div>
+                        <div class="text-sm text-gray-500">Total boutiques</div>
+                    </div>
+                    <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                        <div class="text-2xl font-bold text-green-600 mb-1">1,189</div>
+                        <div class="text-sm text-gray-500">Actives</div>
+                    </div>
+                    <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                        <div class="text-2xl font-bold text-orange-600 mb-1">45</div>
+                        <div class="text-sm text-gray-500">Suspendues</div>
+                    </div>
+                    <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                        <div class="text-2xl font-bold text-gray-900 mb-1">45,678</div>
+                        <div class="text-sm text-gray-500">Produits totaux</div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl border border-gray-200 p-4 mb-6 shadow-sm">
+                    <div class="flex items-center gap-4">
+                        <div class="flex-1 relative">
+                            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" placeholder="Rechercher une boutique..." class="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                        </div>
+                        <select class="px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white cursor-pointer hover:border-blue-300 transition-colors">
+                            <option>Tous les statuts</option>
+                            <option>Actif</option>
+                            <option>Suspendu</option>
+                        </select>
+                        <select class="px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white cursor-pointer hover:border-blue-300 transition-colors">
+                            <option>Trier par: Plus récent</option>
+                            <option>Plus ancien</option>
+                            <option>Plus de ventes</option>
+                            <option>Plus de produits</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-gray-50 border-b border-gray-200">
+                                <tr>
+                                    <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Boutique</th>
+                                    <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Propriétaire</th>
+                                    <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Produits</th>
+                                    <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Ventes</th>
+                                    <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Création</th>
+                                    <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Statut</th>
+                                    <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200" id="stores-table-body">
+                                </tbody>
+                        </table>
+                    </div>
+
+                    <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between bg-gray-50">
+                        <div class="text-sm text-gray-600">
+                            Affichage de 1 à 8 sur 1,234 boutiques
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-white transition-colors text-sm font-medium">Précédent</button>
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium shadow-sm">1</button>
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-white transition-colors text-sm font-medium">2</button>
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-white transition-colors text-sm font-medium">3</button>
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-white transition-colors text-sm font-medium">Suivant</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const stores = [
+            { id: 1, name: 'Tech Paradise', owner: 'Jean Martin', products: 234, sales: '45 678 €', status: 'Actif', created: '20/10/2025' },
+            { id: 2, name: 'Fashion Hub', owner: 'Sophie Laurent', products: 456, sales: '38 920 €', status: 'Actif', created: '05/09/2025' },
+            { id: 3, name: 'Home Deco', owner: 'Pierre Dubois', products: 189, sales: '28 450 €', status: 'Actif', created: '12/08/2025' },
+            { id: 4, name: 'Sports Pro', owner: 'Marie Bernard', products: 312, sales: '25 780 €', status: 'Actif', created: '03/05/2025' },
+            { id: 5, name: 'Beauty Corner', owner: 'Emma Petit', products: 145, sales: '18 230 €', status: 'Suspendu', created: '28/07/2025' },
+            { id: 6, name: 'Book Haven', owner: 'Thomas Roux', products: 567, sales: '32 450 €', status: 'Actif', created: '14/06/2025' },
+            { id: 7, name: 'Gadget Store', owner: 'Julie Moreau', products: 278, sales: '22 180 €', status: 'Actif', created: '19/04/2025' },
+            { id: 8, name: 'Pet Paradise', owner: 'Nicolas Simon', products: 198, sales: '15 670 €', status: 'Actif', created: '08/03/2025' },
+        ];
+        const API_URL = 'http://localhost:8000/api';
+        const token = localStorage.getItem('token');
+        if (!token) window.location.href = 'login.html';
+
+        async function loadStores() {
+            try {
+                const res = await fetch(`${API_URL}/stores`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if(res.ok) {
+                    const stores = await res.json();
+                    renderStores(stores);
+                }
+            } catch(e) { console.error(e); }
+        }
+
+        function renderStores(stores) {
+            document.getElementById('stores-table-body').innerHTML = stores.map(store => `
+                <tr class="hover:bg-gray-50 transition-colors group">
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center text-white shadow-sm">
+                                <i class="fas fa-store text-sm"></i>
+                            </div>
+                            <span class="font-medium text-gray-900 group-hover:text-blue-600 transition-colors">${store.name}</span>
+                        </div>
+                        <span class="font-medium text-gray-900 group-hover:text-blue-600 transition-colors">${store.name}</span>
+                    </div>
+                </td>
+                <td class="px-6 py-4 text-gray-600">${store.owner}</td>
+                <td class="px-6 py-4 text-gray-900 font-medium">${store.products}</td>
+                <td class="px-6 py-4 text-gray-900 font-medium">${store.sales}</td>
+                <td class="px-6 py-4 text-gray-500 text-sm">${store.created}</td>
+                <td class="px-6 py-4">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${
+                        store.status === 'Actif' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                    }">
+                        ${store.status}
+                    </span>
+                </td>
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-2">
+                        <button class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Voir">
+                            <i class="far fa-eye"></i>
+                        </button>
+                        <button class="p-2 text-orange-400 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors" title="Suspendre">
+                            <i class="fas fa-ban"></i>
+                        </button>
+                        <button class="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Supprimer">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+                    </td>
+                    <td class="px-6 py-4 text-gray-600">${store.user ? store.user.name : 'Owner'}</td>
+                    <td class="px-6 py-4 text-gray-900 font-medium">${store.products_count || 0}</td>
+                    <td class="px-6 py-4 text-gray-900 font-medium">-</td>
+                    <td class="px-6 py-4 text-gray-500 text-sm">${new Date(store.created_at).toLocaleDateString()}</td>
+                    <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700">
+                            Actif
+                        </span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-2">
+                            <button class="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Supprimer">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        loadStores();
+    </script>
+</body>
+</html>

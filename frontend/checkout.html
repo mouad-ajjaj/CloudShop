@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finaliser la commande - ShopCloud</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        indigo: { 
+                            50: '#f3eefc', 
+                            100: '#d8cbf7', 
+                            500: '#8e44ad', 
+                            600: '#6f42c1', 
+                            700: '#5a32a3' 
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between gap-8">
+                <a href="index.html" class="flex items-center gap-2 text-decoration-none">
+                    <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center text-white shadow-lg">
+                        <i class="fas fa-shopping-cart text-lg"></i>
+                    </div>
+                    <span class="text-xl font-bold text-indigo-600 tracking-tight">ShopCloud</span>
+                </a>
+
+                <div class="hidden md:flex items-center gap-4 text-sm">
+                    <div class="flex items-center gap-2 opacity-50">
+                        <div class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center font-bold">1</div>
+                        <span class="text-gray-600">Panier</span>
+                    </div>
+                    <div class="w-12 h-0.5 bg-indigo-600"></div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold shadow-md shadow-indigo-200">2</div>
+                        <span class="text-indigo-900 font-bold">Livraison & Paiement</span>
+                    </div>
+                    <div class="w-12 h-0.5 bg-gray-200"></div>
+                    <div class="flex items-center gap-2 opacity-50">
+                        <div class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center font-bold">3</div>
+                        <span class="text-gray-600">Confirmation</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 text-green-600 font-medium text-sm">
+                    <i class="fas fa-lock"></i> Paiement Sécurisé
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-6 py-12">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">Finaliser la commande</h1>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-2 space-y-8">
+                
+                <div class="bg-white rounded-xl border border-gray-200 p-8 shadow-sm">
+                    <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                        <span class="w-8 h-8 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-sm font-bold">1</span>
+                        Adresse de livraison
+                    </h2>
+                    
+                    <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Prénom</label>
+                            <input type="text" placeholder="Jean" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all bg-gray-50 focus:bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nom</label>
+                            <input type="text" placeholder="Dupont" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all bg-gray-50 focus:bg-white">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Adresse</label>
+                            <input type="text" placeholder="123 Rue de la Paix" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all bg-gray-50 focus:bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Ville</label>
+                            <input type="text" placeholder="Paris" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all bg-gray-50 focus:bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Code Postal</label>
+                            <input type="text" placeholder="75001" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all bg-gray-50 focus:bg-white">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Pays</label>
+                            <select class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all bg-gray-50 focus:bg-white">
+                                <option>France</option>
+                                <option>Belgique</option>
+                                <option>Suisse</option>
+                                <option>Canada</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Téléphone</label>
+                            <input type="tel" placeholder="+33 6 12 34 56 78" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all bg-gray-50 focus:bg-white">
+                        </div>
+                    </form>
+                </div>
+
+                <div class="bg-white rounded-xl border border-gray-200 p-8 shadow-sm">
+                    <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                        <span class="w-8 h-8 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-sm font-bold">2</span>
+                        Mode de paiement
+                    </h2>
+
+                    <div class="space-y-4">
+                        <label class="flex items-center justify-between p-4 border-2 border-indigo-600 bg-indigo-50 rounded-xl cursor-pointer transition-all shadow-sm">
+                            <div class="flex items-center gap-4">
+                                <input type="radio" name="payment" class="w-5 h-5 text-indigo-600 focus:ring-indigo-500" checked>
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2 bg-white rounded-lg text-indigo-600 border border-indigo-100">
+                                        <i class="far fa-credit-card text-xl"></i>
+                                    </div>
+                                    <span class="font-medium text-gray-900">Carte Bancaire</span>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <i class="fab fa-cc-visa text-2xl text-gray-400"></i>
+                                <i class="fab fa-cc-mastercard text-2xl text-gray-400"></i>
+                            </div>
+                        </label>
+
+                        <label class="flex items-center justify-between p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-indigo-300 hover:bg-gray-50 transition-all">
+                            <div class="flex items-center gap-4">
+                                <input type="radio" name="payment" class="w-5 h-5 text-indigo-600 focus:ring-indigo-500">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2 bg-white rounded-lg text-blue-600 border border-gray-200">
+                                        <i class="fab fa-paypal text-xl"></i>
+                                    </div>
+                                    <span class="font-medium text-gray-900">PayPal</span>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="flex items-center justify-between p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-indigo-300 hover:bg-gray-50 transition-all">
+                            <div class="flex items-center gap-4">
+                                <input type="radio" name="payment" class="w-5 h-5 text-indigo-600 focus:ring-indigo-500">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2 bg-white rounded-lg text-gray-600 border border-gray-200">
+                                        <i class="fas fa-university text-xl"></i>
+                                    </div>
+                                    <span class="font-medium text-gray-900">Virement Bancaire</span>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full">
+                <div class="bg-white rounded-xl border border-gray-200 p-6 sticky top-24 shadow-sm">
+                    <h2 class="text-xl font-bold text-gray-900 mb-6">Récapitulatif</h2>
+
+                    <div class="space-y-4 mb-6 pb-6 border-b border-gray-100" id="checkout-items">
+                        </div>
+
+                    <div class="space-y-3 mb-6 pb-6 border-b border-gray-100">
+                        <div class="flex justify-between text-gray-600">
+                            <span>Sous-total</span>
+                            <span class="font-medium" id="subtotal">0.00 €</span>
+                        </div>
+                        <div class="flex justify-between text-gray-600">
+                            <span>Livraison</span>
+                            <span class="font-medium" id="shipping">0.00 €</span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-end mb-8">
+                        <span class="font-bold text-gray-900 text-lg">Total à payer</span>
+                        <span class="text-3xl font-bold text-indigo-600" id="total">0.00 €</span>
+                    </div>
+
+                    <button onclick="submitOrder()" class="w-full px-6 py-4 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                        <i class="fas fa-lock"></i> Confirmer la commande
+                    </button>
+
+                    <p class="text-xs text-gray-500 text-center mt-4 leading-relaxed">
+                        En confirmant votre commande, vous acceptez nos <a href="#" class="text-indigo-600 underline">conditions générales de vente</a>.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000/api';
+        const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
+
+        if(cartItems.length === 0) {
+            window.location.href = 'index.html';
+        }
+
+        const shipping = 5.99;
+        const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        const total = subtotal + shipping;
+
+        // Render Items
+        document.getElementById('checkout-items').innerHTML = cartItems.map(item => `
+            <div class="flex items-center justify-between text-sm group">
+                <div class="flex items-center gap-3">
+                    <span class="bg-gray-100 text-gray-600 w-6 h-6 flex items-center justify-center rounded text-xs font-bold">${item.quantity}x</span>
+                    <span class="text-gray-900 font-medium group-hover:text-indigo-600 transition-colors">${item.name}</span>
+                </div>
+                <span class="text-gray-900 font-bold">${(item.price * item.quantity).toFixed(2)} €</span>
+            </div>
+        `).join('');
+
+        // Render Totals
+        document.getElementById('subtotal').innerText = subtotal.toFixed(2) + ' €';
+        document.getElementById('shipping').innerText = shipping.toFixed(2) + ' €';
+        document.getElementById('total').innerText = total.toFixed(2) + ' €';
+
+        async function submitOrder() {
+            const token = localStorage.getItem('token');
+            if(!token) {
+                alert("Veuillez vous connecter.");
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/orders`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ items: cartItems, total: total })
+                });
+
+                if(!res.ok) throw new Error("Order failed");
+                
+                localStorage.removeItem('cart');
+                alert("Commande validée avec succès !");
+                window.location.href = 'index.html';
+            } catch (e) {
+                alert("Erreur lors de la commande. (API non disponible)");
+            }
+        }
+    </script>
+</body>
+</html>

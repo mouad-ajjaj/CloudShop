@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Panier - ShopCloud</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        indigo: { 
+                            50: '#f3eefc', 
+                            100: '#d8cbf7', 
+                            500: '#8e44ad', 
+                            600: '#6f42c1', 
+                            700: '#5a32a3' 
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between gap-8">
+                <a href="index.html" class="flex items-center gap-2 text-decoration-none">
+                    <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center text-white shadow-lg">
+                        <i class="fas fa-shopping-cart text-lg"></i>
+                    </div>
+                    <span class="text-xl font-bold text-indigo-600 tracking-tight">ShopCloud</span>
+                </a>
+                <div class="flex-1 max-w-2xl hidden md:block">
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" placeholder="Rechercher des produits..." class="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all shadow-sm bg-gray-50 focus:bg-white">
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="cart.html" class="relative p-3 text-indigo-600 bg-indigo-50 rounded-lg transition-colors">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span class="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center border-2 border-white">3</span>
+                    </a>
+                    <a href="login.html" id="auth-btn" class="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all shadow-md shadow-indigo-200 font-medium">
+                        <i class="far fa-user"></i>
+                        <span>Connexion</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-6 py-12">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">Mon Panier</h1>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <div class="flex-1">
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden" id="cart-items">
+                    </div>
+
+                <a href="index.html" class="inline-flex items-center mt-6 text-indigo-600 font-medium hover:text-indigo-700 hover:underline">
+                    <i class="fas fa-arrow-left mr-2"></i> Continuer mes achats
+                </a>
+            </div>
+
+            <div class="w-full lg:w-96 flex-shrink-0">
+                <div class="bg-white rounded-xl border border-gray-200 p-6 sticky top-24 shadow-sm">
+                    <h2 class="text-xl font-bold text-gray-900 mb-6">Résumé de commande</h2>
+
+                    <div class="space-y-4 mb-6 border-b border-gray-100 pb-6">
+                        <div class="flex justify-between text-gray-600">
+                            <span>Sous-total</span>
+                            <span class="font-medium" id="subtotal-display">0.00 €</span>
+                        </div>
+                        <div class="flex justify-between text-gray-600">
+                            <span>Livraison</span>
+                            <span class="text-green-600 font-medium">Gratuite</span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-end mb-8">
+                        <span class="font-bold text-gray-900 text-lg">Total</span>
+                        <span class="text-3xl font-bold text-indigo-600" id="total-display">0.00 €</span>
+                    </div>
+
+                    <button onclick="checkout()" class="w-full px-6 py-4 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                        Passer la commande
+                    </button>
+
+                    <div class="mt-6 space-y-3">
+                        <div class="flex items-center gap-3 text-sm text-gray-500">
+                            <div class="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center text-green-600">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span>Paiement 100% sécurisé</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-sm text-gray-500">
+                            <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <span>Livraison gratuite dès 50€</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-sm text-gray-500">
+                            <div class="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center text-purple-600">
+                                <i class="fas fa-undo"></i>
+                            </div>
+                            <span>Retour gratuit sous 30 jours</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000/api';
+
+        // --- Auth Logic ---
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const authBtn = document.getElementById('auth-btn');
+
+            if (token && authBtn) {
+                // Change button to "Mon Compte" and add Logout functionality
+                const dashboardLink = user.role === 'admin' ? 'admin-dashboard.html' : (user.role === 'store_owner' ? 'dashboard.html' : 'index.html');
+                
+                authBtn.innerHTML = `<i class="fas fa-user-circle"></i> <span>Mon Compte</span>`;
+                authBtn.href = dashboardLink;
+                
+                // Optional: You could append a logout button next to it, but per instructions we update the existing button or navbar.
+                // For this specific design, we point to the dashboard where logout usually resides, 
+                // or we could change the text to indicate logged in state.
+                authBtn.title = "Accéder à mon compte";
+            }
+        }
+
+        // --- Cart Logic ---
+        function loadCart() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const container = document.getElementById('cart-items');
+            
+            if (cart.length === 0) {
+                container.innerHTML = '<div class="p-12 text-center text-gray-500">Votre panier est vide. <a href="index.html" class="text-indigo-600 hover:underline">Retourner à la boutique</a></div>';
+                updateTotals(0);
+                return;
+            }
+
+            container.innerHTML = cart.map((item, index) => {
+                // Parse price if it's a string like "89.99 €"
+                let price = typeof item.price === 'string' 
+                    ? parseFloat(item.price.replace('€', '').replace(',', '.').trim()) 
+                    : item.price;
+                
+                if (isNaN(price)) price = 0;
+
+                return `
+                <div class="p-6 flex flex-col sm:flex-row items-center gap-6 ${index !== cart.length - 1 ? 'border-b border-gray-100' : ''}">
+                    <div class="w-24 h-24 bg-gray-50 rounded-xl overflow-hidden flex-shrink-0 border border-gray-200">
+                        <img src="${item.image || 'https://via.placeholder.com/150'}" alt="${item.name}" class="w-full h-full object-cover">
+                    </div>
+
+                    <div class="flex-1 text-center sm:text-left">
+                        <h3 class="text-lg font-bold text-gray-900 mb-1">${item.name}</h3>
+                        <p class="text-indigo-600 font-medium">${price.toFixed(2)} €</p>
+                    </div>
+
+                    <div class="flex items-center gap-6">
+                        <div class="flex items-center border border-gray-200 rounded-lg bg-gray-50">
+                            <button onclick="updateQuantity(${item.id}, -1)" class="p-2 px-3 hover:bg-white hover:text-indigo-600 transition-colors rounded-l-lg"><i class="fas fa-minus text-xs"></i></button>
+                            <input type="text" value="${item.quantity}" class="w-10 text-center bg-transparent border-none font-semibold text-gray-900 p-0 focus:ring-0" readonly>
+                            <button onclick="updateQuantity(${item.id}, 1)" class="p-2 px-3 hover:bg-white hover:text-indigo-600 transition-colors rounded-r-lg"><i class="fas fa-plus text-xs"></i></button>
+                        </div>
+
+                        <div class="text-lg font-bold text-gray-900 w-24 text-right">
+                            ${(price * item.quantity).toFixed(2)} €
+                        </div>
+
+                        <button onclick="removeItem(${item.id})" class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            `}).join('');
+
+            updateTotals(cart);
+        }
+
+        function updateQuantity(id, change) {
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const item = cart.find(i => i.id == id);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(i => i.id != id);
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadCart();
+            }
+        }
+
+        function removeItem(id) {
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            cart = cart.filter(i => i.id != id);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            loadCart();
+        }
+
+        function updateTotals(cart) {
+            let total = 0;
+            if (Array.isArray(cart)) {
+                total = cart.reduce((acc, item) => {
+                    let price = typeof item.price === 'string' 
+                        ? parseFloat(item.price.replace('€', '').replace(',', '.').trim()) 
+                        : item.price;
+                    return acc + (price * item.quantity);
+                }, 0);
+            }
+            
+            document.getElementById('subtotal-display').innerText = total.toFixed(2) + ' €';
+            document.getElementById('total-display').innerText = total.toFixed(2) + ' €';
+        }
+
+        function checkout() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            if (cart.length === 0) {
+                alert("Votre panier est vide !");
+                return;
+            }
+            
+            if (!localStorage.getItem('token')) {
+                alert("Veuillez vous connecter pour commander.");
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Redirect to checkout page
+            window.location.href = 'checkout.html';
+        }
+
+        // Initialize
+        checkAuth();
+        loadCart();
+    </script>
+</body>
+</html>
