@@ -32,4 +32,26 @@ class StoreController extends Controller
     {
         return Store::all();
     }
+
+    // Show specific store with its products (Public)
+    public function show($id)
+    {
+        return Store::with('products')->findOrFail($id);
+    }
+
+    // Update Vendor's own store details (Vendor Only)
+    public function update(Request $request)
+    {
+        // Find the store belonging to the currently logged-in user
+        $store = Store::where('user_id', Auth::id())->firstOrFail();
+        
+        $request->validate([
+            'name' => 'string|max:255',
+            'description' => 'nullable|string'
+        ]);
+
+        $store->update($request->only(['name', 'description']));
+        
+        return response()->json($store);
+    }
 }

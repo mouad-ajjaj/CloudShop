@@ -64,4 +64,34 @@ class ProductController extends Controller
 
         return response()->json($product, 201);
     }
+
+    // 4. Update Product (Vendor & Admin)
+    public function update(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+
+        // Security Check: Ensure the user owns the store that owns the product (or is Admin)
+        if ($product->store->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
+             return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $product->update($request->all());
+        
+        return response()->json($product);
+    }
+
+    // 5. Delete Product (Vendor & Admin)
+    public function destroy($id)
+    {
+        $product = Product::findOrFail($id);
+        
+        // Security Check: Ensure the user owns the store that owns the product (or is Admin)
+        if ($product->store->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
+             return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $product->delete();
+        
+        return response()->json(['message' => 'Deleted successfully']);
+    }
 }

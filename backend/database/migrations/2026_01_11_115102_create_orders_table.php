@@ -10,12 +10,16 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('orders', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('orders', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('user_id')->constrained()->onDelete('cascade');
+        $table->decimal('total_amount', 10, 2);
+        $table->string('status')->default('pending'); // pending, completed, cancelled
+        $table->text('address'); // Stores JSON string of shipping address
+        $table->timestamps();
+    });
+}
 
     /**
      * Reverse the migrations.

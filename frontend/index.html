@@ -55,7 +55,7 @@
                         <span class="hidden sm:inline">Catégories</span>
                     </button>
 
-                    <a href="#" class="relative p-3 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition-colors">
+                    <a href="cart.html" class="relative p-3 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition-colors">
                         <i class="fas fa-shopping-cart text-xl"></i>
                         <span id="cart-badge" class="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center border-2 border-white opacity-0 transition-opacity">0</span>
                     </a>
@@ -178,40 +178,97 @@
             { name: 'Livres', icon: 'fa-book' },
         ];
 
-        // Fallback Data (Matches your visual preferences)
-        const MOCK_PRODUCTS = [
-            { id: 1, name: 'Casque sans fil', price: '89.99', rating: 4.5, image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400' },
-            { id: 2, name: 'T-shirt moderne', price: '29.99', rating: 4.8, image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400' },
-            { id: 3, name: 'Décoration murale', price: '45.00', rating: 4.3, image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400' },
-            { id: 4, name: 'Montre connectée', price: '199.99', rating: 4.7, image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400' },
-        ];
-
         let allProducts = [];
 
-        // --- 2. AUTH LOGIC ---
+        // --- 2. AUTH LOGIC (Dropdown Update) ---
         function checkAuth() {
             const token = localStorage.getItem('token');
             const user = JSON.parse(localStorage.getItem('user') || '{}');
             const authSection = document.getElementById('auth-section');
 
             if (token) {
-                let link = 'index.html';
-                if(user.role === 'store_owner') link = 'dashboard.html';
-                if(user.role === 'admin') link = 'admin-dashboard.html';
+                // Determine if user is a vendor
+                const isVendor = user.role === 'store_owner';
+                const isAdmin = user.role === 'admin';
+
+                // Build Vendor Menu Items
+                let vendorMenu = '';
+                if (isVendor) {
+                    vendorMenu = `
+                        <div class="px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">Boutique</div>
+                        <a href="dashboard.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-700">
+                            <i class="fas fa-chart-pie mr-2 text-indigo-500"></i>Tableau de bord
+                        </a>
+                        <a href="store-public.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-700">
+                            <i class="fas fa-store mr-2 text-indigo-500"></i>Ma Boutique
+                        </a>
+                        <div class="border-t border-gray-100 my-1"></div>
+                    `;
+                }
+                
+                // Build Admin Menu Items
+                if (isAdmin) {
+                    vendorMenu = `
+                        <a href="admin-dashboard.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-700">
+                            <i class="fas fa-user-shield mr-2 text-indigo-500"></i>Admin
+                        </a>
+                        <div class="border-t border-gray-100 my-1"></div>
+                    `;
+                }
 
                 authSection.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <a href="${link}" class="flex items-center gap-2 text-indigo-700 font-bold hover:bg-indigo-50 px-3 py-2 rounded-lg transition-colors">
-                            <i class="fas fa-user-circle text-xl"></i>
-                            <span class="hidden sm:inline">Mon Compte</span>
-                        </a>
-                        <button onclick="logout()" class="text-red-500 hover:bg-red-50 px-3 py-2 rounded-lg transition-colors">
-                            <i class="fas fa-sign-out-alt"></i>
+                    <div class="relative" id="user-menu-container">
+                        <button onclick="toggleUserMenu()" class="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                            <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-bold border border-indigo-200">
+                                ${user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                            </div>
+                            <div class="text-left hidden sm:block">
+                                <span class="block text-sm font-medium text-gray-700 leading-none">${user.name || 'Mon Compte'}</span>
+                                <span class="text-xs text-gray-500">${isVendor ? 'Vendeur' : 'Client'}</span>
+                            </div>
+                            <i class="fas fa-chevron-down text-xs text-gray-400 ml-1 transition-transform" id="menu-arrow"></i>
                         </button>
+
+                        <div id="user-dropdown" class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 hidden z-50 overflow-hidden transform origin-top-right transition-all">
+                            <div class="px-4 py-3 bg-gray-50 border-b border-gray-100">
+                                <p class="text-sm font-bold text-gray-900 truncate">${user.name}</p>
+                                <p class="text-xs text-gray-500 truncate">${user.email}</p>
+                            </div>
+                            
+                            <div class="py-1">
+                                ${vendorMenu}
+                                
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                    <i class="fas fa-user mr-2 text-gray-400"></i>Mon Profil
+                                </a>
+                                <a href="#" onclick="logout()" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>Déconnexion
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 `;
             }
         }
+
+        function toggleUserMenu() {
+            const menu = document.getElementById('user-dropdown');
+            const arrow = document.getElementById('menu-arrow');
+            menu.classList.toggle('hidden');
+            arrow.classList.toggle('rotate-180');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const container = document.getElementById('user-menu-container');
+            const menu = document.getElementById('user-dropdown');
+            const arrow = document.getElementById('menu-arrow');
+            
+            if (container && !container.contains(event.target) && menu && !menu.classList.contains('hidden')) {
+                menu.classList.add('hidden');
+                if(arrow) arrow.classList.remove('rotate-180');
+            }
+        });
 
         function logout() {
             localStorage.clear();
@@ -221,25 +278,21 @@
         // --- 3. FETCH & RENDER LOGIC ---
         async function loadProducts() {
             try {
-                // Render Categories first (Static)
                 renderCategories();
-
-                // Fetch Products
                 const response = await fetch(`${API_URL}/products?featured=true`);
                 if (!response.ok) throw new Error("Backend unavailable");
                 
                 const data = await response.json();
                 
-                if (data.length > 0) {
-                    // Take first 8 for home page
+                if (Array.isArray(data)) {
                     allProducts = data.slice(0, 8);
                 } else {
-                    console.warn("Using Mock Data");
-                    allProducts = MOCK_PRODUCTS;
+                    allProducts = [];
                 }
+
             } catch (error) {
-                console.error("Using Mock Data (Error):", error);
-                allProducts = MOCK_PRODUCTS;
+                console.error("Error loading products:", error);
+                allProducts = []; 
             } finally {
                 renderProducts(allProducts);
             }
@@ -262,19 +315,16 @@
         function renderProducts(products) {
             const prodContainer = document.getElementById('products-grid');
             
-            if (products.length === 0) {
-                prodContainer.innerHTML = `<div class="col-span-full text-center py-10 text-gray-500">Aucun produit trouvé.</div>`;
+            if (!products || products.length === 0) {
+                prodContainer.innerHTML = `<div class="col-span-full text-center py-20 text-gray-500 text-lg">Aucun produit trouvé.</div>`;
                 return;
             }
 
             prodContainer.innerHTML = products.map(p => {
-                // Ensure price has formatting
                 let priceDisplay = p.price;
                 if (!String(priceDisplay).includes('€')) {
                     priceDisplay = parseFloat(priceDisplay).toFixed(2) + ' €';
                 }
-                
-                // Random rating if not in DB
                 const rating = p.rating || (Math.random() * 1.5 + 3.5).toFixed(1);
 
                 return `
@@ -288,14 +338,12 @@
                     
                     <div class="p-5">
                         <h3 class="text-gray-900 font-bold mb-2 text-lg leading-tight group-hover:text-indigo-600 transition-colors line-clamp-1">${p.name}</h3>
-                        
                         <div class="flex items-center gap-1 mb-4">
                             ${Array(5).fill(0).map((_, i) => 
                                 `<i class="fas fa-star text-xs ${i < Math.floor(rating) ? 'text-yellow-400' : 'text-gray-300'}"></i>`
                             ).join('')}
                             <span class="text-sm text-gray-500 ml-1 font-medium">(${rating})</span>
                         </div>
-
                         <div class="flex items-center justify-between pt-2 border-t border-gray-50">
                             <span class="text-xl font-bold text-indigo-600">${priceDisplay}</span>
                             <button onclick="addToCart('${p.id}', '${p.name.replace(/'/g, "\\'")}', '${priceDisplay}')" 
@@ -336,7 +384,6 @@
             }
         }
 
-        // Search Listener
         document.getElementById('search-input').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
             const filtered = allProducts.filter(p => p.name.toLowerCase().includes(term));

@@ -9,120 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script>
-    const API_URL = 'http://localhost:8000/api';
-
-    // 1. Check Auth on Load
-    const token = localStorage.getItem('token');
-    if (!token) {
-        window.location.href = 'login.html';
-    }
-
-    // 1.5 Check for Edit Mode
-    const urlParams = new URLSearchParams(window.location.search);
-    const editId = urlParams.get('id');
-
-    if(editId) {
-        document.title = "Modifier le produit";
-        fetch(`${API_URL}/products/${editId}`)
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('product-name').value = data.name;
-                document.getElementById('product-desc').value = data.description;
-                document.getElementById('product-category').value = data.category;
-                document.getElementById('product-brand').value = data.brand || '';
-                document.getElementById('product-price').value = data.price;
-                document.getElementById('product-stock').value = data.stock;
-            }).catch(e => console.log("Edit fetch failed", e));
-    }
-
-    // 2. Handle Form Submit
-    document.querySelector('form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = e.target.querySelector('button[type="submit"]');
-        const originalText = btn.innerText;
-
-        // Visual Loading State
-        btn.innerText = 'Publication...';
-        btn.disabled = true;
-
-        try {
-            // 3. Gather Data (using FormData for images)
-            const formData = new FormData();
-            
-            formData.append('name', document.getElementById('product-name').value);
-            formData.append('description', document.getElementById('product-desc').value);
-            formData.append('category', document.getElementById('product-category').value);
-            formData.append('brand', document.getElementById('product-brand').value);
-            formData.append('price', document.getElementById('product-price').value);
-            formData.append('stock', document.getElementById('product-stock').value);
-
-            // Image (Simulated logic: usually you'd have <input type="file">)
-            // For now, let's create a standard file input to make this work for real:
-            // *User Note*: We will add a hidden file input to your HTML below this script to make this easy.
-            const fileInput = document.getElementById('imageUpload');
-            if (fileInput && fileInput.files[0]) {
-                formData.append('image', fileInput.files[0]);
-            }
-
-            // 4. Send to Backend
-            const url = editId ? `${API_URL}/vendor/products/${editId}` : `${API_URL}/vendor/products`;
-            
-            const response = await fetch(url, {
-                method: editId ? 'POST' : 'POST', // Laravel often uses POST with _method=PUT for FormData
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    // Do NOT set Content-Type header when sending FormData! 
-                    // The browser sets it automatically with the boundary.
-                },
-                body: formData
-            });
-            
-            // Note: For PUT with FormData in Laravel, usually need _method field.
-            if(editId) formData.append('_method', 'PUT');
-
-            if (response.ok) {
-                alert('Produit ajouté avec succès !');
-                window.location.href = 'store-products.html';
-            } else {
-                const error = await response.json();
-                console.error('Error:', error);
-                alert('Erreur: ' + (error.message || 'Vérifiez les champs'));
-            }
-
-        } catch (err) {
-            console.error(err);
-            alert('Erreur de connexion au serveur.');
-        } finally {
-            btn.innerText = originalText;
-            btn.disabled = false;
-        }
-    });
-
-    // Helper: Trigger file upload when clicking the upload box
-    // You need to give the upload box an ID or select it
-    const uploadBox = document.querySelector('.aspect-square.border-dashed');
-    if(uploadBox) {
-        uploadBox.addEventListener('click', () => {
-            // Create a temp input to select file
-            let input = document.getElementById('imageUpload');
-            if(!input) {
-                input = document.createElement('input');
-                input.type = 'file';
-                input.id = 'imageUpload';
-                input.style.display = 'none';
-                input.accept = 'image/*';
-                document.body.appendChild(input);
-                
-                input.addEventListener('change', () => {
-                   uploadBox.innerHTML = `<img src="${URL.createObjectURL(input.files[0])}" class="w-full h-full object-cover rounded-lg">`;
-                });
-            }
-            input.click();
-        });
-    }
-</script>
+    <script src="assets/js/config.js"></script>
 </head>
 <body class="bg-gray-50 text-gray-900 font-sans">
 
@@ -149,19 +36,32 @@
                         <i class="fas fa-box w-5 text-center"></i>
                         <span>Produits</span>
                     </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                    <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
                         <i class="fas fa-shopping-cart w-5 text-center"></i>
                         <span>Commandes</span>
                     </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                    <a href="store-customization.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
                         <i class="fas fa-paint-brush w-5 text-center"></i>
                         <span>Personnalisation</span>
                     </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
-                        <i class="fas fa-cog w-5 text-center"></i>
-                        <span>Paramètres</span>
+                    
+                    <a href="store-public.html" target="_blank" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                        <i class="fas fa-external-link-alt w-5 text-center"></i>
+                        <span>Voir ma boutique</span>
+                    </a>
+
+                    <a href="index.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                        <i class="fas fa-home w-5 text-center"></i>
+                        <span>Retour à l'accueil</span>
                     </a>
                 </nav>
+            </div>
+            
+            <div class="absolute bottom-0 w-full p-6 border-t border-gray-100 bg-white">
+                <a href="#" onclick="logout(event)" class="flex items-center gap-3 text-red-600 hover:bg-red-50 px-4 py-3 rounded-lg transition-colors font-medium">
+                    <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                    <span>Déconnexion</span>
+                </a>
             </div>
         </aside>
 
@@ -169,48 +69,40 @@
             <div class="max-w-4xl mx-auto">
                 
                 <div class="mb-8">
-                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Ajouter un produit</h1>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2" id="page-title">Ajouter un produit</h1>
                     <p class="text-gray-600">Créez un nouveau produit pour votre boutique</p>
                 </div>
 
                 <div class="bg-white rounded-xl border border-gray-200 p-8 shadow-sm">
-                    <form class="space-y-8">
+                    <form id="product-form" class="space-y-8">
                         
                         <div>
                             <h3 class="text-lg font-bold text-gray-900 mb-4">Informations générales</h3>
                             <div class="space-y-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Nom du produit <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="text" id="product-name" placeholder="Ex: Casque sans fil Premium" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Nom du produit *</label>
+                                    <input type="text" id="product-name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all">
                                 </div>
-
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Description <span class="text-red-500">*</span>
-                                    </label>
-                                    <textarea id="product-desc" rows="6" placeholder="Décrivez votre produit en détail..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none transition-all"></textarea>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Description *</label>
+                                    <textarea id="product-desc" required rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"></textarea>
                                 </div>
-
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                                            Catégorie <span class="text-red-500">*</span>
-                                        </label>
-                                        <select id="product-category" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white">
-                                            <option value="">Sélectionner une catégorie</option>
-                                            <option>Électronique</option>
-                                            <option>Mode</option>
-                                            <option>Maison</option>
-                                            <option>Sport</option>
-                                            <option>Beauté</option>
-                                            <option>Livres</option>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Catégorie *</label>
+                                        <select id="product-category" required class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                            <option value="">Sélectionner</option>
+                                            <option value="Électronique">Électronique</option>
+                                            <option value="Mode">Mode</option>
+                                            <option value="Maison">Maison</option>
+                                            <option value="Sport">Sport</option>
+                                            <option value="Beauté">Beauté</option>
+                                            <option value="Livres">Livres</option>
                                         </select>
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Marque</label>
-                                        <input type="text" id="product-brand" placeholder="Ex: Apple, Nike..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all">
+                                        <input type="text" id="product-brand" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
                                     </div>
                                 </div>
                             </div>
@@ -218,85 +110,37 @@
 
                         <div>
                             <h3 class="text-lg font-bold text-gray-900 mb-4">Prix et stock</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Prix <span class="text-red-500">*</span>
-                                    </label>
-                                    <div class="relative">
-                                        <input type="number" id="product-price" step="0.01" placeholder="0.00" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all">
-                                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500">€</span>
-                                    </div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Prix (€) *</label>
+                                    <input type="number" id="product-price" required step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Prix promotionnel</label>
-                                    <div class="relative">
-                                        <input type="number" id="product-promo" step="0.01" placeholder="0.00" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all">
-                                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500">€</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Stock <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="number" id="product-stock" placeholder="0" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Stock *</label>
+                                    <input type="number" id="product-stock" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
                                 </div>
                             </div>
                         </div>
 
                         <div>
-                            <h3 class="text-lg font-bold text-gray-900 mb-4">Images du produit</h3>
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                <div class="aspect-square border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-purple-500 hover:bg-purple-50 transition-colors">
-                                    <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
-                                    <span class="text-sm text-gray-600 font-medium">Ajouter</span>
+                            <h3 class="text-lg font-bold text-gray-900 mb-4">Image du produit</h3>
+                            <div class="flex gap-4">
+                                <div id="upload-trigger" class="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-purple-500 hover:bg-purple-50 transition-colors relative overflow-hidden bg-gray-50">
+                                    <i class="fas fa-camera text-2xl text-gray-400 mb-1"></i>
+                                    <span class="text-xs text-gray-500">Ajouter</span>
+                                    <img id="image-preview" class="absolute inset-0 w-full h-full object-cover hidden">
                                 </div>
                                 
-                                <div class="aspect-square border border-gray-300 rounded-lg overflow-hidden relative group bg-gray-100">
-                                    <button class="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center shadow-sm">
-                                        <i class="fas fa-times text-xs"></i>
-                                    </button>
-                                </div>
-                                <div class="aspect-square border border-gray-300 rounded-lg overflow-hidden relative group bg-gray-100">
-                                    <button class="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center shadow-sm">
-                                        <i class="fas fa-times text-xs"></i>
-                                    </button>
-                                </div>
-                                <div class="aspect-square border border-gray-300 rounded-lg overflow-hidden relative group bg-gray-100">
-                                    <button class="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center shadow-sm">
-                                        <i class="fas fa-times text-xs"></i>
-                                    </button>
-                                </div>
+                                <input type="file" id="image-input" accept="image/*" class="hidden">
                             </div>
-                            <p class="text-sm text-gray-500 mt-2">Ajoutez jusqu'à 8 images. Format recommandé: 1000x1000px</p>
+                            <p class="text-xs text-gray-500 mt-2">Cliquez sur le carré pour ajouter une image.</p>
                         </div>
 
-                        <div>
-                            <h3 class="text-lg font-bold text-gray-900 mb-4">Options supplémentaires</h3>
-                            <div class="space-y-3">
-                                <label class="flex items-center gap-3 cursor-pointer">
-                                    <input type="checkbox" class="w-4 h-4 text-purple-600 rounded focus:ring-purple-500 border-gray-300">
-                                    <span class="text-gray-700">Produit en vedette</span>
-                                </label>
-                                <label class="flex items-center gap-3 cursor-pointer">
-                                    <input type="checkbox" class="w-4 h-4 text-purple-600 rounded focus:ring-purple-500 border-gray-300">
-                                    <span class="text-gray-700">Nouveau produit</span>
-                                </label>
-                                <label class="flex items-center gap-3 cursor-pointer">
-                                    <input type="checkbox" class="w-4 h-4 text-purple-600 rounded focus:ring-purple-500 border-gray-300" checked>
-                                    <span class="text-gray-700">Produit actif</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="flex flex-col sm:flex-row items-center justify-end gap-4 pt-6 border-t border-gray-200">
-                            <button type="button" class="w-full sm:w-auto px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium">
+                        <div class="flex items-center justify-end gap-4 pt-6 border-t border-gray-200">
+                            <button type="button" onclick="window.location.href='store-products.html'" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium">
                                 Annuler
                             </button>
-                            <button type="button" class="w-full sm:w-auto px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium">
-                                Enregistrer comme brouillon
-                            </button>
-                            <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium shadow-md shadow-purple-200">
+                            <button type="submit" id="submit-btn" class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium shadow-md">
                                 Publier le produit
                             </button>
                         </div>
@@ -308,5 +152,126 @@
         </main>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const API_URL = 'http://localhost:8000/api';
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // --- 1. Image Upload Logic ---
+            const trigger = document.getElementById('upload-trigger');
+            const input = document.getElementById('image-input');
+            const preview = document.getElementById('image-preview');
+
+            trigger.addEventListener('click', () => {
+                input.click(); // Trigger hidden input
+            });
+
+            input.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    preview.src = URL.createObjectURL(file);
+                    preview.classList.remove('hidden');
+                }
+            });
+
+            // --- 2. Edit Mode Check ---
+            const urlParams = new URLSearchParams(window.location.search);
+            const editId = urlParams.get('id');
+
+            if(editId) {
+                document.getElementById('page-title').innerText = "Modifier le produit";
+                document.getElementById('submit-btn').innerText = "Mettre à jour";
+                
+                fetch(`${API_URL}/vendor/products/${editId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('product-name').value = data.name;
+                    document.getElementById('product-desc').value = data.description;
+                    document.getElementById('product-category').value = data.category;
+                    document.getElementById('product-brand').value = data.brand || '';
+                    document.getElementById('product-price').value = data.price;
+                    document.getElementById('product-stock').value = data.stock;
+                    if(data.image) {
+                        preview.src = data.image;
+                        preview.classList.remove('hidden');
+                    }
+                })
+                .catch(err => console.error("Load Error:", err));
+            }
+
+            // --- 3. Form Submit Logic ---
+            const form = document.getElementById('product-form');
+            
+            form.addEventListener('submit', async (e) => {
+                // STOP THE PAGE RELOAD
+                e.preventDefault(); 
+                
+                const btn = document.getElementById('submit-btn');
+                const originalText = btn.innerText;
+                btn.innerText = "Envoi...";
+                btn.disabled = true;
+
+                try {
+                    const formData = new FormData();
+                    formData.append('name', document.getElementById('product-name').value);
+                    formData.append('description', document.getElementById('product-desc').value);
+                    formData.append('category', document.getElementById('product-category').value);
+                    formData.append('brand', document.getElementById('product-brand').value);
+                    formData.append('price', document.getElementById('product-price').value);
+                    formData.append('stock', document.getElementById('product-stock').value);
+
+                    if (input.files[0]) {
+                        formData.append('image', input.files[0]);
+                    }
+
+                    let url = `${API_URL}/vendor/products`;
+                    
+                    if (editId) {
+                        url = `${API_URL}/vendor/products/${editId}`;
+                        formData.append('_method', 'PUT'); // Laravel requirement for FormData PUT
+                    }
+
+                    const res = await fetch(url, {
+                        method: 'POST', // Use POST even for updates (due to FormData)
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json'
+                            // Do NOT set Content-Type here, browser does it automatically
+                        },
+                        body: formData
+                    });
+
+                    if (res.ok) {
+                        alert("Produit enregistré avec succès !");
+                        window.location.href = 'store-products.html';
+                    } else {
+                        const errorData = await res.json();
+                        alert("Erreur: " + (errorData.message || "Vérifiez les champs"));
+                        console.error(errorData);
+                    }
+
+                } catch (error) {
+                    console.error(error);
+                    alert("Erreur de connexion au serveur.");
+                } finally {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }
+            });
+        });
+
+        function logout(e) {
+            e.preventDefault();
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+    </script>
 </body>
 </html>

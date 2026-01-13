@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commandes - ShopCloud</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="assets/js/config.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        purple: { 50: '#faf5ff', 100: '#f3e8ff', 600: '#9333ea', 700: '#7e22ce' },
+                        indigo: { 600: '#4f46e5' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans">
+
+    <div class="flex min-h-screen">
+        
+        <aside class="w-64 bg-white border-r border-gray-200 flex-shrink-0 fixed h-full z-10">
+            <div class="p-6">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-10 h-10 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-lg flex items-center justify-center text-white shadow-md">
+                        <i class="fas fa-shopping-bag text-lg"></i>
+                    </div>
+                    <div>
+                        <div class="text-gray-900 font-bold">Ma Boutique</div>
+                        <div class="text-xs text-gray-500 font-medium uppercase tracking-wide">Propriétaire</div>
+                    </div>
+                </div>
+
+                <nav class="space-y-2">
+                    <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                        <i class="fas fa-chart-pie w-5 text-center"></i>
+                        <span>Tableau de bord</span>
+                    </a>
+                    <a href="store-products.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                        <i class="fas fa-box w-5 text-center"></i>
+                        <span>Produits</span>
+                    </a>
+                    <a href="store-orders.html" class="flex items-center gap-3 px-4 py-3 bg-purple-50 text-purple-700 rounded-lg transition-colors font-medium">
+                        <i class="fas fa-shopping-cart w-5 text-center"></i>
+                        <span>Commandes</span>
+                    </a>
+                    <a href="store-customization.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                        <i class="fas fa-paint-brush w-5 text-center"></i>
+                        <span>Personnalisation</span>
+                    </a>
+                    
+                    <a href="store-public.html" target="_blank" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                        <i class="fas fa-external-link-alt w-5 text-center"></i>
+                        <span>Voir ma boutique</span>
+                    </a>
+
+                    <a href="index.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                        <i class="fas fa-home w-5 text-center"></i>
+                        <span>Retour à l'accueil</span>
+                    </a>
+
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-400 cursor-not-allowed rounded-lg transition-colors font-medium">
+                        <i class="fas fa-cog w-5 text-center"></i>
+                        <span>Paramètres</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="absolute bottom-0 w-full p-6 border-t border-gray-100 bg-white">
+                <a href="#" onclick="logout(event)" class="flex items-center gap-3 text-red-600 hover:bg-red-50 px-4 py-3 rounded-lg transition-colors font-medium">
+                    <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="flex-1 ml-64 p-8">
+            <div class="max-w-7xl mx-auto">
+                
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Commandes</h1>
+                        <p class="text-gray-600">Suivez et gérez les commandes de vos clients</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="loadOrders()" class="p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors" title="Actualiser">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl border border-gray-200 p-4 mb-6 shadow-sm flex flex-col md:flex-row gap-4">
+                    <div class="flex-1 relative">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="search-input" placeholder="Rechercher par client ou ID..." class="w-full pl-12 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500">
+                    </div>
+                    <select id="status-filter" class="px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 bg-white">
+                        <option value="">Tous les statuts</option>
+                        <option value="pending">En attente</option>
+                        <option value="processing">En cours</option>
+                        <option value="shipped">Expédié</option>
+                        <option value="delivered">Livré</option>
+                        <option value="cancelled">Annulé</option>
+                    </select>
+                </div>
+
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-gray-50 border-b border-gray-200">
+                                <tr>
+                                    <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">ID</th>
+                                    <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Client</th>
+                                    <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
+                                    <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Montant</th>
+                                    <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Statut</th>
+                                    <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200" id="orders-table-body">
+                                <tr>
+                                    <td colspan="6" class="px-6 py-12 text-center text-gray-500">
+                                        <div class="flex flex-col items-center">
+                                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mb-2"></div>
+                                            Chargement des commandes...
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000/api';
+        const token = localStorage.getItem('token');
+
+        if (!token) window.location.href = 'login.html';
+
+        function logout(e) {
+            e.preventDefault();
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+
+        // --- 1. Fetch Orders ---
+        async function loadOrders() {
+            try {
+                // NOTE: If this 404s, you need to add Route::get('/vendor/orders', ...) in api.php
+                // For now, we reuse recent orders logic but ideally you want a full list endpoint
+                const response = await fetch(`${API_URL}/vendor/orders/recent`, { 
+                    headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+                });
+
+                if (response.ok) {
+                    const orders = await response.json();
+                    renderTable(orders);
+                } else {
+                    document.getElementById('orders-table-body').innerHTML = `
+                        <tr><td colspan="6" class="px-6 py-8 text-center text-red-500">
+                            Impossible de charger les commandes.
+                        </td></tr>`;
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+
+        // --- 2. Render Table ---
+        function renderTable(orders) {
+            const tbody = document.getElementById('orders-table-body');
+            
+            if (orders.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-12 text-center text-gray-500">Aucune commande trouvée.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = orders.map(order => {
+                // Determine user name safely
+                const userName = (order.order && order.order.user) ? order.order.user.name : 'Client invité';
+                const date = new Date(order.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                const total = (parseFloat(order.price) * order.quantity).toFixed(2);
+                
+                // Status Color Logic
+                const status = order.status || 'pending';
+                let statusColor = 'bg-yellow-100 text-yellow-800';
+                if(status === 'completed' || status === 'delivered') statusColor = 'bg-green-100 text-green-800';
+                if(status === 'cancelled') statusColor = 'bg-red-100 text-red-800';
+                if(status === 'processing') statusColor = 'bg-blue-100 text-blue-800';
+
+                return `
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-6 py-4 font-mono text-sm text-gray-500">#${order.id}</td>
+                    <td class="px-6 py-4">
+                        <div class="font-medium text-gray-900">${userName}</div>
+                        <div class="text-xs text-gray-500">${order.product ? order.product.name : 'Produit supprimé'} (x${order.quantity})</div>
+                    </td>
+                    <td class="px-6 py-4 text-gray-600 text-sm">${date}</td>
+                    <td class="px-6 py-4 font-bold text-gray-900">${total} €</td>
+                    <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColor}">
+                            ${status.charAt(0).toUpperCase() + status.slice(1)}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <select onchange="updateStatus(${order.id}, this.value)" 
+                                class="text-sm border-gray-300 rounded-md shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 transition-all cursor-pointer bg-white py-1 px-2 border">
+                            <option value="pending" ${status === 'pending' ? 'selected' : ''}>En attente</option>
+                            <option value="processing" ${status === 'processing' ? 'selected' : ''}>En cours</option>
+                            <option value="shipped" ${status === 'shipped' ? 'selected' : ''}>Expédié</option>
+                            <option value="delivered" ${status === 'delivered' ? 'selected' : ''}>Livré</option>
+                            <option value="cancelled" ${status === 'cancelled' ? 'selected' : ''}>Annulé</option>
+                        </select>
+                    </td>
+                </tr>
+            `}).join('');
+        }
+
+        // --- 3. Update Status Logic ---
+        async function updateStatus(orderId, newStatus) {
+            // Visual feedback could be added here (toast)
+            try {
+                // NOTE: Ensure your Backend has a route: Route::put('/vendor/orders/{id}', ...)
+                const res = await fetch(`${API_URL}/vendor/orders/${orderId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                if(res.ok) {
+                    // Ideally show a toast "Statut mis à jour"
+                    // We reload to reflect any color changes or sorting
+                    loadOrders(); 
+                } else {
+                    alert("Erreur lors de la mise à jour du statut");
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Erreur connexion");
+            }
+        }
+
+        // Search Filter
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#orders-table-body tr');
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(term) ? '' : 'none';
+            });
+        });
+
+        // Init
+        loadOrders();
+    </script>
+</body>
+</html>

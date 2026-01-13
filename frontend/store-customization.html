@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personnalisation de la boutique - ShopCloud</title>
+    <title>Personnalisation - ShopCloud</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="assets/js/config.js"></script>
     
     <script>
         tailwind.config = {
@@ -49,7 +50,7 @@
                         <i class="fas fa-box w-5 text-center"></i>
                         <span>Produits</span>
                     </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                    <a href="store-orders.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
                         <i class="fas fa-shopping-cart w-5 text-center"></i>
                         <span>Commandes</span>
                     </a>
@@ -57,11 +58,29 @@
                         <i class="fas fa-paint-brush w-5 text-center"></i>
                         <span>Personnalisation</span>
                     </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                    
+                    <a href="store-public.html" target="_blank" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                        <i class="fas fa-external-link-alt w-5 text-center"></i>
+                        <span>Voir ma boutique</span>
+                    </a>
+
+                    <a href="index.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                        <i class="fas fa-home w-5 text-center"></i>
+                        <span>Retour à l'accueil</span>
+                    </a>
+
+                    <a href="#" onclick="alert('Fonctionnalité bientôt disponible !')" class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-gray-50 rounded-lg transition-colors font-medium cursor-not-allowed">
                         <i class="fas fa-cog w-5 text-center"></i>
                         <span>Paramètres</span>
                     </a>
                 </nav>
+            </div>
+            
+            <div class="absolute bottom-0 w-full p-6 border-t border-gray-100 bg-white">
+                <a href="#" onclick="logout(event)" class="flex items-center gap-3 text-red-600 hover:bg-red-50 px-4 py-3 rounded-lg transition-colors font-medium">
+                    <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                    <span>Déconnexion</span>
+                </a>
             </div>
         </aside>
 
@@ -69,8 +88,8 @@
             <div class="max-w-5xl mx-auto">
                 
                 <div class="mb-8">
-                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Personnalisation de la boutique</h1>
-                    <p class="text-gray-600">Personnalisez l'apparence de votre boutique</p>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Personnalisation</h1>
+                    <p class="text-gray-600">Modifiez l'apparence de votre boutique</p>
                 </div>
 
                 <div class="space-y-6">
@@ -82,23 +101,27 @@
                             </div>
                             <div>
                                 <h2 class="text-lg font-bold text-gray-900">Bannière principale</h2>
-                                <p class="text-sm text-gray-600">Choisissez l'image et le texte de votre bannière</p>
+                                <p class="text-sm text-gray-600">Personnalisez votre en-tête</p>
                             </div>
                         </div>
 
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Image de la bannière</label>
-                                <div class="aspect-[3/1] bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:border-purple-500 hover:bg-purple-50 transition-colors">
-                                    <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
-                                    <p class="text-sm text-gray-600 font-medium">Cliquez pour télécharger une bannière</p>
-                                    <p class="text-xs text-gray-500 mt-1">Recommandé: 1920x640px</p>
+                                <div id="banner-upload-area" class="aspect-[3/1] bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:border-purple-500 hover:bg-purple-50 transition-colors relative overflow-hidden group">
+                                    <div id="banner-placeholder" class="text-center p-4">
+                                        <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2 group-hover:text-purple-500 transition-colors"></i>
+                                        <p class="text-sm text-gray-600 font-medium">Cliquez pour télécharger une bannière</p>
+                                        <p class="text-xs text-gray-500 mt-1">Recommandé: 1920x640px</p>
+                                    </div>
+                                    <img id="banner-preview" class="absolute inset-0 w-full h-full object-cover hidden">
                                 </div>
+                                <input type="file" id="banner-input" accept="image/*" class="hidden">
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Titre de la bannière</label>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Titre</label>
                                     <input type="text" id="banner-title" placeholder="Bienvenue dans ma boutique" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all">
                                 </div>
                                 <div>
@@ -120,43 +143,32 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-3 gap-4">
-                            <div class="border-2 border-purple-600 rounded-lg p-4 cursor-pointer bg-purple-50 transition-all">
+                        <div class="grid grid-cols-3 gap-4" id="layout-options">
+                            <div onclick="selectLayout('grid-2')" id="layout-grid-2" class="layout-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer hover:border-purple-500 hover:bg-purple-50 transition-all">
                                 <div class="aspect-square bg-white rounded-lg mb-3 grid grid-cols-2 gap-2 p-2 border border-gray-100">
-                                    <div class="bg-gray-200 rounded"></div>
-                                    <div class="bg-gray-200 rounded"></div>
-                                    <div class="bg-gray-200 rounded"></div>
-                                    <div class="bg-gray-200 rounded"></div>
+                                    <div class="bg-gray-200 rounded"></div><div class="bg-gray-200 rounded"></div>
+                                    <div class="bg-gray-200 rounded"></div><div class="bg-gray-200 rounded"></div>
                                 </div>
-                                <p class="text-sm text-center font-medium text-gray-900">Grille 2 colonnes</p>
+                                <p class="text-sm text-center font-medium text-gray-600">Grille 2 colonnes</p>
                             </div>
 
-                            <div class="border-2 border-gray-200 rounded-lg p-4 cursor-pointer hover:border-purple-500 hover:bg-purple-50 transition-all">
-                                <div class="aspect-square bg-white rounded-lg mb-3 grid grid-cols-3 gap-2 p-2 border border-gray-100">
-                                    <div class="bg-gray-200 rounded"></div>
-                                    <div class="bg-gray-200 rounded"></div>
-                                    <div class="bg-gray-200 rounded"></div>
-                                    <div class="bg-gray-200 rounded"></div>
-                                    <div class="bg-gray-200 rounded"></div>
-                                    <div class="bg-gray-200 rounded"></div>
+                            <div onclick="selectLayout('grid-3')" id="layout-grid-3" class="layout-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer hover:border-purple-500 hover:bg-purple-50 transition-all">
+                                <div class="aspect-square bg-white rounded-lg mb-3 grid grid-cols-3 gap-1 p-2 border border-gray-100">
+                                    <div class="bg-gray-200 rounded"></div><div class="bg-gray-200 rounded"></div><div class="bg-gray-200 rounded"></div>
+                                    <div class="bg-gray-200 rounded"></div><div class="bg-gray-200 rounded"></div><div class="bg-gray-200 rounded"></div>
                                 </div>
                                 <p class="text-sm text-center font-medium text-gray-600">Grille 3 colonnes</p>
                             </div>
 
-                            <div class="border-2 border-gray-200 rounded-lg p-4 cursor-pointer hover:border-purple-500 hover:bg-purple-50 transition-all">
+                            <div onclick="selectLayout('grid-4')" id="layout-grid-4" class="layout-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer hover:border-purple-500 hover:bg-purple-50 transition-all">
                                 <div class="aspect-square bg-white rounded-lg mb-3 grid grid-cols-4 gap-1 p-2 border border-gray-100">
-                                    <div class="bg-gray-200 rounded"></div>
-                                    <div class="bg-gray-200 rounded"></div>
-                                    <div class="bg-gray-200 rounded"></div>
-                                    <div class="bg-gray-200 rounded"></div>
-                                    <div class="bg-gray-200 rounded"></div>
-                                    <div class="bg-gray-200 rounded"></div>
-                                    <div class="bg-gray-200 rounded"></div>
-                                    <div class="bg-gray-200 rounded"></div>
+                                    <div class="bg-gray-200 rounded"></div><div class="bg-gray-200 rounded"></div>
+                                    <div class="bg-gray-200 rounded"></div><div class="bg-gray-200 rounded"></div>
                                 </div>
                                 <p class="text-sm text-center font-medium text-gray-600">Grille 4 colonnes</p>
                             </div>
                         </div>
+                        <input type="hidden" id="selected-layout" value="grid-4">
                     </div>
 
                     <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
@@ -170,38 +182,14 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 cursor-pointer hover:border-purple-500 hover:bg-purple-50 transition-colors text-center group">
-                                <div class="aspect-square bg-gray-100 rounded-lg mb-3 flex items-center justify-center group-hover:bg-white transition-colors">
-                                    <i class="fas fa-plus text-gray-400 text-xl group-hover:text-purple-500"></i>
-                                </div>
-                                <p class="text-sm text-gray-600 font-medium group-hover:text-purple-600">Sélectionner</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="featured-slots">
                             </div>
-                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 cursor-pointer hover:border-purple-500 hover:bg-purple-50 transition-colors text-center group">
-                                <div class="aspect-square bg-gray-100 rounded-lg mb-3 flex items-center justify-center group-hover:bg-white transition-colors">
-                                    <i class="fas fa-plus text-gray-400 text-xl group-hover:text-purple-500"></i>
-                                </div>
-                                <p class="text-sm text-gray-600 font-medium group-hover:text-purple-600">Sélectionner</p>
-                            </div>
-                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 cursor-pointer hover:border-purple-500 hover:bg-purple-50 transition-colors text-center group">
-                                <div class="aspect-square bg-gray-100 rounded-lg mb-3 flex items-center justify-center group-hover:bg-white transition-colors">
-                                    <i class="fas fa-plus text-gray-400 text-xl group-hover:text-purple-500"></i>
-                                </div>
-                                <p class="text-sm text-gray-600 font-medium group-hover:text-purple-600">Sélectionner</p>
-                            </div>
-                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 cursor-pointer hover:border-purple-500 hover:bg-purple-50 transition-colors text-center group">
-                                <div class="aspect-square bg-gray-100 rounded-lg mb-3 flex items-center justify-center group-hover:bg-white transition-colors">
-                                    <i class="fas fa-plus text-gray-400 text-xl group-hover:text-purple-500"></i>
-                                </div>
-                                <p class="text-sm text-gray-600 font-medium group-hover:text-purple-600">Sélectionner</p>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
                         <div class="mb-6">
                             <h2 class="text-lg font-bold text-gray-900 mb-1">Thème de couleurs</h2>
-                            <p class="text-sm text-gray-600">Choisissez les couleurs principales de votre boutique</p>
+                            <p class="text-sm text-gray-600">Définissez l'identité visuelle</p>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -230,10 +218,10 @@
                     </div>
 
                     <div class="flex items-center justify-end gap-4 pt-4">
-                        <button class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium">
+                        <button onclick="window.location.reload()" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium">
                             Annuler
                         </button>
-                        <button class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium shadow-md shadow-purple-200">
+                        <button id="save-btn" class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium shadow-md shadow-purple-200">
                             Enregistrer les modifications
                         </button>
                     </div>
@@ -248,7 +236,17 @@
         const token = localStorage.getItem('token');
         if(!token) window.location.href = 'login.html';
 
-        // Sync color inputs
+        let availableProducts = [];
+        let featuredSelection = [null, null, null, null]; // IDs of selected products
+
+        // --- 1. Init ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadProducts(); // Fetch products for the dropdowns
+            await loadSettings(); // Fetch saved settings
+            renderFeaturedSlots(); // Render the slots
+        });
+
+        // --- 2. Color Sync ---
         ['primary', 'secondary', 'accent'].forEach(type => {
             const picker = document.getElementById(`color-${type}`);
             const text = document.getElementById(`color-${type}-text`);
@@ -256,7 +254,83 @@
             text.addEventListener('input', e => picker.value = e.target.value);
         });
 
-        // Load Settings
+        // --- 3. Banner Upload ---
+        const bannerArea = document.getElementById('banner-upload-area');
+        const bannerInput = document.getElementById('banner-input');
+        const bannerPreview = document.getElementById('banner-preview');
+        const bannerPlaceholder = document.getElementById('banner-placeholder');
+
+        bannerArea.addEventListener('click', () => bannerInput.click());
+        bannerInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                bannerPreview.src = URL.createObjectURL(file);
+                bannerPreview.classList.remove('hidden');
+                bannerPlaceholder.classList.add('hidden');
+            }
+        });
+
+        // --- 4. Layout Selection ---
+        function selectLayout(layout) {
+            document.querySelectorAll('.layout-option').forEach(el => {
+                el.classList.remove('border-purple-600', 'bg-purple-50');
+                el.classList.add('border-gray-200');
+            });
+            const selected = document.getElementById(`layout-${layout}`);
+            if(selected) {
+                selected.classList.remove('border-gray-200');
+                selected.classList.add('border-purple-600', 'bg-purple-50');
+            }
+            document.getElementById('selected-layout').value = layout;
+        }
+
+        // --- 5. Featured Products Logic ---
+        async function loadProducts() {
+            try {
+                const res = await fetch(`${API_URL}/vendor/products`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if(res.ok) availableProducts = await res.json();
+            } catch(e) { console.error("Error loading products", e); }
+        }
+
+        function renderFeaturedSlots() {
+            const container = document.getElementById('featured-slots');
+            container.innerHTML = featuredSelection.map((selectedId, index) => {
+                // If a product is selected, show its mini card
+                if(selectedId) {
+                    const product = availableProducts.find(p => p.id == selectedId);
+                    return `
+                        <div class="relative border-2 border-purple-500 bg-purple-50 rounded-lg p-4 text-center group">
+                            <button onclick="updateFeatured(${index}, null)" class="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors z-10" title="Retirer">
+                                <i class="fas fa-times text-xs"></i>
+                            </button>
+                            <div class="aspect-square bg-white rounded-lg mb-3 overflow-hidden border border-gray-200">
+                                <img src="${product ? (product.image || 'https://via.placeholder.com/150') : 'https://via.placeholder.com/150'}" class="w-full h-full object-cover">
+                            </div>
+                            <p class="text-sm font-bold text-gray-900 truncate">${product ? product.name : 'Produit introuvable'}</p>
+                        </div>
+                    `;
+                }
+                // Else show the "Select" dropdown
+                return `
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center hover:border-purple-500 hover:bg-purple-50 transition-colors">
+                        <i class="fas fa-plus text-gray-400 text-xl mb-2"></i>
+                        <select onchange="updateFeatured(${index}, this.value)" class="w-full text-sm border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500 p-1">
+                            <option value="">Sélectionner</option>
+                            ${availableProducts.map(p => `<option value="${p.id}">${p.name}</option>`).join('')}
+                        </select>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateFeatured(index, value) {
+            featuredSelection[index] = value ? parseInt(value) : null;
+            renderFeaturedSlots();
+        }
+
+        // --- 6. Load & Save Settings ---
         async function loadSettings() {
             try {
                 const res = await fetch(`${API_URL}/vendor/store`, {
@@ -264,9 +338,23 @@
                 });
                 if(res.ok) {
                     const data = await res.json();
+                    
+                    // Inputs
                     if(data.banner_title) document.getElementById('banner-title').value = data.banner_title;
                     if(data.banner_subtitle) document.getElementById('banner-subtitle').value = data.banner_subtitle;
                     
+                    // Banner Image
+                    if(data.banner_image) {
+                        bannerPreview.src = data.banner_image;
+                        bannerPreview.classList.remove('hidden');
+                        bannerPlaceholder.classList.add('hidden');
+                    }
+
+                    // Layout
+                    if(data.layout) selectLayout(data.layout);
+                    else selectLayout('grid-4'); // Default
+
+                    // Colors
                     if(data.color_primary) {
                         document.getElementById('color-primary').value = data.color_primary;
                         document.getElementById('color-primary-text').value = data.color_primary;
@@ -275,41 +363,77 @@
                         document.getElementById('color-secondary').value = data.color_secondary;
                         document.getElementById('color-secondary-text').value = data.color_secondary;
                     }
+                    if(data.color_accent) {
+                        document.getElementById('color-accent').value = data.color_accent;
+                        document.getElementById('color-accent-text').value = data.color_accent;
+                    }
+
+                    // Featured
+                    if(data.featured_products && Array.isArray(data.featured_products)) {
+                        // Ensure array is size 4
+                        featuredSelection = [null, null, null, null].map((v, i) => data.featured_products[i] || null);
+                    }
                 }
-            } catch(e) { console.log("Using default settings"); }
+            } catch(e) { console.log("Defaults loaded"); }
         }
 
-        document.querySelector('button.bg-purple-600').addEventListener('click', async () => {
-            const btn = document.querySelector('button.bg-purple-600');
+        document.getElementById('save-btn').addEventListener('click', async () => {
+            const btn = document.getElementById('save-btn');
             const originalText = btn.innerText;
-            btn.innerText = "Enregistrement...";
+            btn.innerText = "Sauvegarde...";
             btn.disabled = true;
 
             try {
-                const res = await fetch(`${API_URL}/vendor/store`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        banner_title: document.getElementById('banner-title').value,
-                        banner_subtitle: document.getElementById('banner-subtitle').value,
-                        color_primary: document.getElementById('color-primary').value,
-                        color_secondary: document.getElementById('color-secondary').value,
-                        color_accent: document.getElementById('color-accent').value
-                    })
+                const formData = new FormData();
+                formData.append('banner_title', document.getElementById('banner-title').value);
+                formData.append('banner_subtitle', document.getElementById('banner-subtitle').value);
+                formData.append('color_primary', document.getElementById('color-primary').value);
+                formData.append('color_secondary', document.getElementById('color-secondary').value);
+                formData.append('color_accent', document.getElementById('color-accent').value);
+                formData.append('layout', document.getElementById('selected-layout').value);
+                
+                // Append featured products as array
+                featuredSelection.forEach(id => {
+                    if(id) formData.append('featured_products[]', id);
                 });
-                if(res.ok) alert("Paramètres sauvegardés !");
-                else alert("Erreur lors de la sauvegarde.");
-            } catch(e) { alert("Erreur sauvegarde"); }
-            finally {
+
+                if (bannerInput.files[0]) {
+                    formData.append('banner_image', bannerInput.files[0]);
+                }
+
+                // Use POST with _method=PUT to handle files in Laravel
+                formData.append('_method', 'PUT');
+
+                const res = await fetch(`${API_URL}/vendor/store`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
+
+                if(res.ok) {
+                    alert("Paramètres sauvegardés avec succès !");
+                } else {
+                    const err = await res.json();
+                    alert("Erreur: " + (err.message || "Vérifiez les données"));
+                }
+
+            } catch(e) {
+                console.error(e);
+                alert("Erreur de connexion");
+            } finally {
                 btn.innerText = originalText;
                 btn.disabled = false;
             }
         });
 
-        loadSettings();
+        function logout(e) {
+            e.preventDefault();
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
     </script>
 </body>
 </html>

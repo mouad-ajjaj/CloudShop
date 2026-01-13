@@ -9,6 +9,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="assets/js/config.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        purple: { 50: '#faf5ff', 100: '#f3e8ff', 600: '#9333ea', 700: '#7e22ce' },
+                        indigo: { 600: '#4f46e5' }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body class="bg-gray-50 text-gray-900 font-sans">
 
@@ -35,15 +50,26 @@
                         <i class="fas fa-box w-5 text-center"></i>
                         <span>Produits</span>
                     </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                    <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
                         <i class="fas fa-shopping-cart w-5 text-center"></i>
                         <span>Commandes</span>
                     </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                    <a href="store-customization.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
                         <i class="fas fa-paint-brush w-5 text-center"></i>
                         <span>Personnalisation</span>
                     </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                    
+                    <a href="store-public.html" target="_blank" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                        <i class="fas fa-external-link-alt w-5 text-center"></i>
+                        <span>Voir ma boutique</span>
+                    </a>
+
+                    <a href="index.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                        <i class="fas fa-home w-5 text-center"></i>
+                        <span>Retour à l'accueil</span>
+                    </a>
+
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-400 cursor-not-allowed rounded-lg transition-colors font-medium">
                         <i class="fas fa-cog w-5 text-center"></i>
                         <span>Paramètres</span>
                     </a>
@@ -51,7 +77,7 @@
             </div>
             
             <div class="absolute bottom-0 w-full p-6 border-t border-gray-100 bg-white">
-                <a href="login.html" onclick="localStorage.clear()" class="flex items-center gap-3 text-red-600 hover:bg-red-50 px-4 py-3 rounded-lg transition-colors font-medium">
+                <a href="#" onclick="logout(event)" class="flex items-center gap-3 text-red-600 hover:bg-red-50 px-4 py-3 rounded-lg transition-colors font-medium">
                     <i class="fas fa-sign-out-alt w-5 text-center"></i>
                     <span>Déconnexion</span>
                 </a>
@@ -76,19 +102,13 @@
                     <div class="flex flex-col md:flex-row items-center gap-4">
                         <div class="flex-1 relative w-full">
                             <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                            <input type="text" placeholder="Rechercher un produit..." class="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all">
+                            <input type="text" id="search-input" placeholder="Rechercher un produit..." class="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all">
                         </div>
                         <select class="w-full md:w-auto px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 bg-white cursor-pointer hover:border-purple-300 transition-colors">
-                            <option>Toutes catégories</option>
-                            <option>Électronique</option>
-                            <option>Mode</option>
-                            <option>Maison</option>
-                        </select>
-                        <select class="w-full md:w-auto px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 bg-white cursor-pointer hover:border-purple-300 transition-colors">
-                            <option>Tous les statuts</option>
-                            <option>En stock</option>
-                            <option>Stock bas</option>
-                            <option>Rupture</option>
+                            <option value="">Toutes catégories</option>
+                            <option value="Électronique">Électronique</option>
+                            <option value="Mode">Mode</option>
+                            <option value="Maison">Maison</option>
                         </select>
                     </div>
                 </div>
@@ -107,7 +127,15 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200" id="products-table-body">
-                                </tbody>
+                                <tr>
+                                    <td colspan="6" class="px-6 py-8 text-center text-gray-500">
+                                        <div class="flex flex-col items-center">
+                                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mb-2"></div>
+                                            Chargement...
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -118,10 +146,16 @@
 
     <script>
         const API_URL = 'http://localhost:8000/api';
-
-        // 1. Check Auth
         const token = localStorage.getItem('token');
+
+        // 1. Auth Check
         if (!token) window.location.href = 'login.html';
+
+        function logout(e) {
+            e.preventDefault();
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
 
         // 2. Fetch Products
         async function loadProducts() {
@@ -132,8 +166,13 @@
                         'Accept': 'application/json'
                     }
                 });
-                const products = await response.json();
-                renderTable(products);
+
+                if(response.ok) {
+                    const products = await response.json();
+                    renderTable(products);
+                } else {
+                    console.error("Failed to load products");
+                }
             } catch (error) {
                 console.error('Error loading products:', error);
             }
@@ -144,7 +183,7 @@
             const tbody = document.getElementById('products-table-body');
             
             if (products.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-gray-500">Aucun produit trouvé.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-gray-500">Aucun produit trouvé. Commencez par en ajouter un !</td></tr>`;
                 return;
             }
 
@@ -153,7 +192,7 @@
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 border border-gray-200">
-                                <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
+                                <img src="${p.image || 'https://via.placeholder.com/150'}" alt="${p.name}" class="w-full h-full object-cover">
                             </div>
                             <span class="font-medium text-gray-900 group-hover:text-purple-700 transition-colors">${p.name}</span>
                         </div>
@@ -163,17 +202,17 @@
                             ${p.category}
                         </span>
                     </td>
-                    <td class="px-6 py-4 font-medium text-gray-900">${p.price} €</td>
+                    <td class="px-6 py-4 font-medium text-gray-900">${parseFloat(p.price).toFixed(2)} €</td>
                     <td class="px-6 py-4 text-gray-600">${p.stock}</td>
                     <td class="px-6 py-4">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700">
-                            ${p.status}
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${p.stock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                            ${p.stock > 0 ? 'En stock' : 'Rupture'}
                         </span>
                     </td>
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-2">
                             <button onclick="window.location.href='store-product-form.html?id=${p.id}'" class="p-2 text-gray-400 hover:text-purple-700 hover:bg-purple-50 rounded-lg transition-colors">
-                                <i class="far fa-eye"></i>
+                                <i class="far fa-edit"></i>
                             </button>
                             <button onclick="deleteProduct(${p.id})" class="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
                                 <i class="fas fa-trash-alt"></i>
@@ -184,18 +223,41 @@
             `).join('');
         }
 
+        // 4. Delete Action
         async function deleteProduct(id) {
-            if(!confirm("Supprimer ce produit ?")) return;
+            if(!confirm("Êtes-vous sûr de vouloir supprimer ce produit ?")) return;
+            
             try {
-                await fetch(`${API_URL}/vendor/products/${id}`, {
+                const res = await fetch(`${API_URL}/vendor/products/${id}`, {
                     method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    }
                 });
-                loadProducts();
-            } catch(e) { alert("Erreur suppression"); }
+
+                if(res.ok) {
+                    loadProducts(); // Reload table
+                } else {
+                    alert("Erreur lors de la suppression");
+                }
+            } catch(e) { 
+                alert("Erreur réseau"); 
+            }
         }
 
-        // Load on start
+        // Search Filter
+        document.getElementById('search-input').addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#products-table-body tr');
+            
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(term) ? '' : 'none';
+            });
+        });
+
+        // Initialize
         loadProducts();
     </script>
 </body>
