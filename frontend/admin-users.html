@@ -2,32 +2,15 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des Utilisateurs - Admin ShopCloud</title>
-    
+    <title>Gestion Utilisateurs - Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: {
-                        blue: { 50: '#eff6ff', 100: '#dbeafe', 600: '#2563eb', 700: '#1d4ed8' },
-                        indigo: { 600: '#4f46e5' }
-                    }
-                }
-            }
-        }
-    </script>
+    <script src="assets/js/config.js"></script>
 </head>
 <body class="bg-gray-50 text-gray-900 font-sans">
 
     <div class="flex min-h-screen">
-        
         <aside class="w-64 bg-white border-r border-gray-200 flex-shrink-0 fixed h-full z-10">
             <div class="p-6">
                 <div class="flex items-center gap-3 mb-8">
@@ -39,267 +22,133 @@
                         <div class="text-xs text-gray-500 font-medium uppercase tracking-wide">Administrateur</div>
                     </div>
                 </div>
-
                 <nav class="space-y-2">
                     <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
-                        <i class="fas fa-th-large w-5 text-center"></i>
-                        <span>Tableau de bord</span>
+                        <i class="fas fa-th-large w-5 text-center"></i> <span>Tableau de bord</span>
                     </a>
                     <a href="admin-users.html" class="flex items-center gap-3 px-4 py-3 bg-blue-50 text-blue-700 rounded-lg transition-colors font-medium">
-                        <i class="fas fa-users w-5 text-center"></i>
-                        <span>Utilisateurs</span>
+                        <i class="fas fa-users w-5 text-center"></i> <span>Utilisateurs</span>
                     </a>
                     <a href="admin-stores.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
-                        <i class="fas fa-store w-5 text-center"></i>
-                        <span>Boutiques</span>
+                        <i class="fas fa-store w-5 text-center"></i> <span>Boutiques</span>
                     </a>
                     <a href="admin-products.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
-                        <i class="fas fa-box w-5 text-center"></i>
-                        <span>Produits</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
-                        <i class="fas fa-exclamation-triangle w-5 text-center"></i>
-                        <span>Signalements</span>
+                        <i class="fas fa-box w-5 text-center"></i> <span>Produits</span>
                     </a>
                 </nav>
             </div>
-            
             <div class="absolute bottom-0 w-full p-6 border-t border-gray-100 bg-white">
                 <a href="#" onclick="logout(event)" class="flex items-center gap-3 text-red-600 hover:bg-red-50 px-4 py-3 rounded-lg transition-colors font-medium">
-                    <i class="fas fa-sign-out-alt w-5 text-center"></i>
-                    <span>Déconnexion</span>
+                    <i class="fas fa-sign-out-alt w-5 text-center"></i> <span>Déconnexion</span>
                 </a>
             </div>
         </aside>
 
         <main class="flex-1 ml-64 p-8">
             <div class="max-w-7xl mx-auto">
-                
-                <div class="flex items-center justify-between mb-8">
-                    <div>
-                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Gestion des utilisateurs</h1>
-                        <p class="text-gray-600">Gérez tous les utilisateurs de la plateforme</p>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                    <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                        <div class="text-2xl font-bold text-gray-900 mb-1">8,542</div>
-                        <div class="text-sm text-gray-500">Total utilisateurs</div>
-                    </div>
-                    <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                        <div class="text-2xl font-bold text-gray-900 mb-1">6,234</div>
-                        <div class="text-sm text-gray-500">Clients</div>
-                    </div>
-                    <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                        <div class="text-2xl font-bold text-gray-900 mb-1">2,308</div>
-                        <div class="text-sm text-gray-500">Store Owners</div>
-                    </div>
-                    <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                        <div class="text-2xl font-bold text-red-600 mb-1">45</div>
-                        <div class="text-sm text-gray-500">Suspendus</div>
-                    </div>
-                </div>
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Gestion des utilisateurs</h1>
+                <p class="text-gray-600 mb-8">Gérez tous les comptes enregistrés.</p>
 
                 <div class="bg-white rounded-xl border border-gray-200 p-4 mb-6 shadow-sm">
                     <div class="flex items-center gap-4">
-                        <div class="flex-1 relative">
-                            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                            <input type="text" id="search-input" placeholder="Rechercher un utilisateur..." class="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
-                        </div>
-                        <select id="role-filter" class="px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white cursor-pointer hover:border-blue-300 transition-colors">
-                            <option>Tous les rôles</option>
-                            <option>Client</option>
-                            <option>Store Owner</option>
-                            <option>Admin</option>
-                        </select>
-                        <select id="status-filter" class="px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white cursor-pointer hover:border-blue-300 transition-colors">
-                            <option>Tous les statuts</option>
-                            <option>Actif</option>
-                            <option>Suspendu</option>
-                            <option>Supprimé</option>
+                        <input type="text" id="search-input" placeholder="Rechercher nom ou email..." class="flex-1 pl-4 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        <select id="role-filter" class="px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="all">Tous les rôles</option>
+                            <option value="client">Client</option>
+                            <option value="store_owner">Vendeur</option>
+                            <option value="admin">Admin</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left">
-                            <thead class="bg-gray-50 border-b border-gray-200">
-                                <tr>
-                                    <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Utilisateur</th>
-                                    <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
-                                    <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Rôle</th>
-                                    <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Inscription</th>
-                                    <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Commandes</th>
-                                    <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Statut</th>
-                                    <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200" id="users-table-body">
-                                </tbody>
-                        </table>
-                    </div>
-
-                    <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between bg-gray-50">
-                        <div class="text-sm text-gray-600">
-                            Affichage de 1 à 8 sur 8,542 utilisateurs
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-white transition-colors text-sm font-medium">Précédent</button>
-                            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium shadow-sm">1</button>
-                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-white transition-colors text-sm font-medium">2</button>
-                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-white transition-colors text-sm font-medium">3</button>
-                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-white transition-colors text-sm font-medium">Suivant</button>
-                        </div>
-                    </div>
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 border-b border-gray-200">
+                            <tr>
+                                <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Utilisateur</th>
+                                <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Email</th>
+                                <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Rôle</th>
+                                <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Inscrit le</th>
+                                <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Commandes</th>
+                                <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200" id="users-table-body"></tbody>
+                    </table>
                 </div>
-
             </div>
         </main>
     </div>
 
     <script>
-        const API_URL = 'http://localhost:8000/api';
+        const API_URL = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:8000/api';
         const token = localStorage.getItem('token');
-        let allUsers = []; // Store for filtering
+        let allUsers = [];
 
         if (!token) window.location.href = 'login.html';
 
-        function logout(e) {
-            e.preventDefault();
-            localStorage.clear();
-            window.location.href = 'index.html';
-        }
-
-        // --- Mock Data ---
-        const MOCK_USERS = [
-            { id: 1, name: 'Marie Dubois', email: 'marie.dubois@email.com', role: 'Client', status: 'Actif', joined: '15/11/2025', orders: 12 },
-            { id: 2, name: 'Pierre Martin', email: 'pierre.martin@email.com', role: 'Store Owner', status: 'Actif', joined: '20/10/2025', orders: 0 },
-            { id: 3, name: 'Sophie Laurent', email: 'sophie.laurent@email.com', role: 'Client', status: 'Actif', joined: '05/09/2025', orders: 23 },
-            { id: 4, name: 'Luc Bernard', email: 'luc.bernard@email.com', role: 'Store Owner', status: 'Actif', joined: '12/08/2025', orders: 0 },
-            { id: 5, name: 'Emma Petit', email: 'emma.petit@email.com', role: 'Client', status: 'Suspendu', joined: '28/07/2025', orders: 5 },
-            { id: 6, name: 'Thomas Roux', email: 'thomas.roux@email.com', role: 'Client', status: 'Actif', joined: '14/06/2025', orders: 8 },
-            { id: 7, name: 'Julie Moreau', email: 'julie.moreau@email.com', role: 'Store Owner', status: 'Actif', joined: '03/05/2025', orders: 0 },
-            { id: 8, name: 'Nicolas Simon', email: 'nicolas.simon@email.com', role: 'Client', status: 'Actif', joined: '19/04/2025', orders: 15 },
-        ];
-
-        // --- Fetch Logic ---
         async function loadUsers() {
             try {
-                const response = await fetch(`${API_URL}/admin/users`, {
+                const res = await fetch(`${API_URL}/admin/users`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
-                if (response.ok) {
-                    allUsers = await response.json();
-                } else {
-                    throw new Error("API Failed");
+                if(res.ok) {
+                    allUsers = await res.json();
+                    renderUsers(allUsers);
                 }
-            } catch (error) {
-                console.warn("Using Mock Users");
-                allUsers = MOCK_USERS;
-            }
-            renderUsers(allUsers);
+            } catch(e) { console.error(e); }
         }
 
-        // --- Render Logic ---
         function renderUsers(users) {
             const tbody = document.getElementById('users-table-body');
-            tbody.innerHTML = users.map(user => `
-                <tr class="hover:bg-gray-50 transition-colors" id="row-${user.id}">
-                    <td class="px-6 py-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold shadow-sm">
-                                ${user.name.charAt(0).toUpperCase()}
-                            </div>
-                            <span class="font-medium text-gray-900">${user.name}</span>
-                        </div>
+            if(users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center">Aucun utilisateur.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = users.map(u => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 font-medium text-gray-900 flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">${u.name.charAt(0).toUpperCase()}</div>
+                        ${u.name}
                     </td>
-                    <td class="px-6 py-4 text-gray-600">${user.email}</td>
+                    <td class="px-6 py-4 text-gray-600">${u.email}</td>
                     <td class="px-6 py-4">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border ${
-                            (user.role === 'Store Owner' || user.role === 'store_owner')
-                            ? 'bg-purple-100 text-purple-700 border-purple-200' 
-                            : 'bg-blue-100 text-blue-700 border-blue-200'
-                        }">
-                            ${user.role}
-                        </span>
+                        <span class="px-2 py-1 rounded text-xs font-bold ${
+                            u.role === 'store_owner' ? 'bg-purple-100 text-purple-700' :
+                            u.role === 'admin' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
+                        }">${u.role}</span>
                     </td>
-                    <td class="px-6 py-4 text-gray-600">${user.joined || user.created_at || '-'}</td>
-                    <td class="px-6 py-4 text-gray-900 font-medium">${user.orders || 0}</td>
+                    <td class="px-6 py-4 text-gray-600">${new Date(u.created_at).toLocaleDateString('fr-FR')}</td>
+                    <td class="px-6 py-4 font-bold">${u.orders_count || 0}</td>
                     <td class="px-6 py-4">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${
-                            user.status === 'Actif' || !user.status
-                            ? 'bg-green-100 text-green-700' 
-                            : 'bg-red-100 text-red-700'
-                        }">
-                            ${user.status || 'Actif'}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center gap-2">
-                            <button class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Voir">
-                                <i class="far fa-eye"></i>
-                            </button>
-                            <button class="p-2 text-orange-400 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors" title="Suspendre">
-                                <i class="fas fa-user-slash"></i>
-                            </button>
-                            <button onclick="deleteUser(${user.id})" class="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Supprimer">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </div>
+                        <button onclick="deleteUser(${u.id})" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>
             `).join('');
         }
 
-        // --- Actions ---
-        async function deleteUser(id) {
-            if(!confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?")) return;
-
-            try {
-                const res = await fetch(`${API_URL}/admin/users/${id}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                
-                if (res.ok || res.status === 404) { // 404 treated as success (already gone)
-                    document.getElementById(`row-${id}`).remove();
-                    allUsers = allUsers.filter(u => u.id != id);
-                } else {
-                    alert("Erreur lors de la suppression");
-                }
-            } catch (e) {
-                // Mock behavior
-                console.warn("Mock delete");
-                document.getElementById(`row-${id}`).remove();
-                allUsers = allUsers.filter(u => u.id != id);
-            }
+        function filterUsers() {
+            const term = document.getElementById('search-input').value.toLowerCase();
+            const role = document.getElementById('role-filter').value;
+            const filtered = allUsers.filter(u => {
+                const matchesSearch = u.name.toLowerCase().includes(term) || u.email.toLowerCase().includes(term);
+                const matchesRole = role === 'all' || u.role === role;
+                return matchesSearch && matchesRole;
+            });
+            renderUsers(filtered);
         }
 
-        // --- Filters ---
-        function filterUsers() {
-            const search = document.getElementById('search-input').value.toLowerCase();
-            const role = document.getElementById('role-filter').value;
-            const status = document.getElementById('status-filter').value;
-
-            const filtered = allUsers.filter(user => {
-                const matchesSearch = user.name.toLowerCase().includes(search) || user.email.toLowerCase().includes(search);
-                const matchesRole = role === 'Tous les rôles' || user.role === role || (role === 'Store Owner' && user.role === 'store_owner');
-                const matchesStatus = status === 'Tous les statuts' || (user.status || 'Actif') === status;
-                
-                return matchesSearch && matchesRole && matchesStatus;
-            });
-
-            renderUsers(filtered);
+        async function deleteUser(id) {
+            if(!confirm("Supprimer cet utilisateur ?")) return;
+            await fetch(`${API_URL}/admin/users/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+            loadUsers();
         }
 
         document.getElementById('search-input').addEventListener('input', filterUsers);
         document.getElementById('role-filter').addEventListener('change', filterUsers);
-        document.getElementById('status-filter').addEventListener('change', filterUsers);
 
-        // Init
+        function logout(e) { e.preventDefault(); localStorage.clear(); window.location.href='index.html'; }
+
         loadUsers();
     </script>
 </body>

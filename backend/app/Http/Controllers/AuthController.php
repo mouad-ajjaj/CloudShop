@@ -9,18 +9,26 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // 1. REGISTER
+    // Helper to format response with Role and Avatar
+    private function formatUser($user) {
+        return [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role, // Critical for frontend routing
+            'avatar' => 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=random&color=fff'
+        ];
+    }
+
     public function register(Request $request)
     {
-        // Validate inputs
         $fields = $request->validate([
             'name' => 'required|string',
             'email' => 'required|string|unique:users,email',
-            'password' => 'required|string|confirmed', // checks password_confirmation
+            'password' => 'required|string|confirmed',
             'role' => 'required|in:client,store_owner,admin'
         ]);
 
-        // Create User
         $user = User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
@@ -28,16 +36,14 @@ class AuthController extends Controller
             'role' => $fields['role']
         ]);
 
-        // Create Token (for staying logged in)
         $token = $user->createToken('myapptoken')->plainTextToken;
 
         return response()->json([
-            'user' => $user,
+            'user' => $this->formatUser($user),
             'token' => $token
         ], 201);
     }
 
-    // 2. LOGIN (We will use this next)
     public function login(Request $request)
     {
         $fields = $request->validate([
@@ -45,29 +51,24 @@ class AuthController extends Controller
             'password' => 'required|string'
         ]);
 
-        // Check email
         $user = User::where('email', $fields['email'])->first();
 
-        // Check password
         if (!$user || !Hash::check($fields['password'], $user->password)) {
-            return response()->json([
-                'message' => 'Identifiants incorrects'
-            ], 401);
+            return response()->json(['message' => 'Identifiants incorrects'], 401);
         }
 
         $token = $user->createToken('myapptoken')->plainTextToken;
 
         return response()->json([
-            'user' => $user,
+            'user' => $this->formatUser($user),
             'token' => $token
-        ], 201);
+        ], 200);
     }
-    
-    // 3. LOGOUT
+
     public function logout(Request $request) {
-        auth()->user()->tokens()->delete();
-        return [
-            'message' => 'Déconnecté'
-        ];
+        if(auth()->user()) {
+            auth()->user()->tokens()->delete();
+        }
+        return ['message' => 'Déconnecté'];
     }
 }

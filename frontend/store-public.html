@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ma Boutique Premium - ShopCloud</title>
+    <title>Boutique - ShopCloud</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="assets/js/config.js"></script>
     
     <script>
         tailwind.config = {
@@ -16,186 +17,279 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        purple: { 50: '#faf5ff', 100: '#f3e8ff', 600: '#9333ea', 700: '#7e22ce' },
-                        indigo: { 600: '#4f46e5' }
+                        // These CSS variables will be updated by JS based on store settings
+                        brand: { 
+                            600: 'var(--color-primary-600, #9333ea)', 
+                        }
                     }
                 }
             }
         }
     </script>
+    
+    <style>
+        /* Default Purple if no store color is found */
+        :root {
+            --color-primary-600: #9333ea; 
+        }
+    </style>
 </head>
-<body class="bg-gray-50 text-gray-900 font-sans">
+<body class="bg-gray-50 text-gray-900 font-sans min-h-screen flex flex-col">
 
     <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-lg flex items-center justify-center text-white shadow-md">
-                        <i class="fas fa-store text-xl"></i>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <a href="index.html" class="text-gray-400 hover:text-gray-600 transition-colors" title="Retour au marché">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div class="w-10 h-10 bg-[var(--color-primary-600)] rounded-lg flex items-center justify-center text-white shadow-md transition-colors duration-300">
+                        <i class="fas fa-store"></i>
                     </div>
-                    <div>
-                        <h1 id="store-name" class="text-xl font-bold text-gray-900 leading-tight">Chargement...</h1>
-                        <p id="store-owner" class="text-sm text-gray-500 flex items-center gap-1">...</p>
-                    </div>
+                    <span id="nav-store-name" class="text-xl font-bold tracking-tight">Chargement...</span>
                 </div>
 
-                <div class="flex items-center gap-3">
-                    <button class="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors border border-gray-200">
-                        <i class="far fa-heart"></i>
-                        <span class="hidden sm:inline">Favoris</span>
-                    </button>
-                    <a href="login.html" class="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors shadow-sm shadow-purple-200">
-                        <i class="far fa-user"></i>
-                        <span>Connexion</span>
+                <div class="flex items-center gap-4">
+                    <a href="cart.html" class="relative p-2 text-gray-600 hover:text-[var(--color-primary-600)] transition-colors">
+                        <i class="fas fa-shopping-cart text-xl"></i>
                     </a>
                 </div>
             </div>
         </div>
     </header>
 
-    <section class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
-        
-        <div class="max-w-7xl mx-auto px-6 py-16 relative z-10">
-            <div class="max-w-2xl">
-                <h2 id="hero-title" class="text-4xl font-extrabold mb-4 leading-tight">Bienvenue</h2>
-                <p class="text-xl text-purple-100 mb-8 font-light">
-                    Découvrez notre sélection de produits de qualité, choisis avec passion pour vous.
-                </p>
-                <div class="flex flex-wrap items-center gap-6 text-purple-100 text-sm font-medium">
-                    <div class="flex items-center gap-2">
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <span class="text-white">4.8/5 (234 avis)</span>
-                    </div>
-                    <div class="hidden sm:block">•</div>
-                    <div>87 produits</div>
-                    <div class="hidden sm:block">•</div>
-                    <div class="flex items-center gap-1"><i class="fas fa-truck text-xs"></i> Livraison gratuite</div>
-                </div>
-            </div>
+    <div class="relative bg-gray-900 text-white overflow-hidden min-h-[300px] flex items-center justify-center">
+        <div class="absolute inset-0">
+            <img id="store-banner" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600" class="w-full h-full object-cover opacity-40">
         </div>
-    </section>
-
-    <div class="bg-white border-b border-gray-200 sticky top-[81px] z-40 shadow-sm">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="flex items-center gap-8 text-sm font-medium overflow-x-auto no-scrollbar">
-                <button class="text-purple-600 border-b-2 border-purple-600 py-4 whitespace-nowrap">Tous les produits</button>
-                <button class="text-gray-500 hover:text-gray-900 py-4 whitespace-nowrap transition-colors">Nouveautés</button>
-                <button class="text-gray-500 hover:text-gray-900 py-4 whitespace-nowrap transition-colors">Promotions</button>
-                <button class="text-gray-500 hover:text-gray-900 py-4 whitespace-nowrap transition-colors">À propos</button>
-            </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 py-12 text-center z-10">
+            <h1 id="hero-title" class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 drop-shadow-lg">
+                </h1>
+            <p id="hero-desc" class="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto drop-shadow-md">
+                </p>
         </div>
     </div>
 
-    <section class="max-w-7xl mx-auto px-6 py-12">
-        <div class="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
-            <h2 class="text-2xl font-bold text-gray-900">Nos produits</h2>
-            <select class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white cursor-pointer hover:border-purple-300 transition-colors text-sm">
-                <option>Trier par: Pertinence</option>
-                <option>Prix croissant</option>
-                <option>Prix décroissant</option>
-                <option>Nouveautés</option>
-            </select>
+    <main class="flex-grow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+                <h2 class="text-2xl font-bold text-gray-900">Tous les produits</h2>
+                
+                <div class="flex gap-3 w-full md:w-auto">
+                    <div class="relative flex-1 md:w-64">
+                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="search-input" placeholder="Rechercher dans la boutique..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-600)] focus:border-transparent">
+                    </div>
+                </div>
+            </div>
+
+            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div class="animate-pulse">
+                    <div class="bg-gray-200 rounded-xl aspect-square mb-4"></div>
+                    <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                </div>
+                <div class="animate-pulse">
+                    <div class="bg-gray-200 rounded-xl aspect-square mb-4"></div>
+                    <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                </div>
+            </div>
+
+            <div id="empty-state" class="hidden text-center py-12">
+                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-box-open text-gray-400 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900">Aucun produit trouvé</h3>
+                <p class="text-gray-500">Cette boutique n'a pas encore ajouté de produits.</p>
+            </div>
+
         </div>
+    </main>
 
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="store-products-grid">
-            </div>
-    </section>
-
-    <footer class="bg-gray-900 text-white mt-16 pt-16 pb-8">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-                <div>
-                    <h4 class="text-lg font-bold mb-4 text-white">Ma Boutique Premium</h4>
-                    <p class="text-gray-400 text-sm leading-relaxed">
-                        Votre destination pour des produits de qualité et un service exceptionnel. 
-                        Nous sélectionnons le meilleur pour nos clients.
-                    </p>
-                </div>
-                <div>
-                    <h4 class="text-lg font-bold mb-4 text-white">Contact</h4>
-                    <ul class="space-y-3 text-sm text-gray-400">
-                        <li class="flex items-center gap-2"><i class="far fa-envelope w-5"></i> contact@maboutique.fr</li>
-                        <li class="flex items-center gap-2"><i class="fas fa-phone w-5"></i> +33 1 23 45 67 89</li>
-                        <li class="flex items-center gap-2"><i class="fas fa-map-marker-alt w-5"></i> Paris, France</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-bold mb-4 text-white">Horaires</h4>
-                    <ul class="space-y-3 text-sm text-gray-400">
-                        <li class="flex justify-between border-b border-gray-800 pb-2"><span>Lun - Ven</span> <span>9h - 19h</span></li>
-                        <li class="flex justify-between border-b border-gray-800 pb-2"><span>Samedi</span> <span>10h - 18h</span></li>
-                        <li class="flex justify-between"><span>Dimanche</span> <span class="text-red-400">Fermé</span></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-gray-800 pt-8 text-center text-sm text-gray-500">
-                &copy; 2025 Ma Boutique Premium. Tous droits réservés. Propulsé par ShopCloud.
-            </div>
+    <footer class="bg-white border-t border-gray-200 py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-500 text-sm">© 2026 ShopCloud.</p>
         </div>
     </footer>
 
     <script>
-        const API_URL = 'http://localhost:8000/api';
-        const urlParams = new URLSearchParams(window.location.search);
-        const storeId = urlParams.get('store_id') || 1;
+        // CONFIG
+        const API = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:8000/api';
+        const token = localStorage.getItem('token');
 
-        async function loadStore() {
-            try {
-                const res = await fetch(`${API_URL}/stores/${storeId}`);
-                if(!res.ok) throw new Error("Store not found");
-                const data = await res.json();
-                
-                // Render Store Info
-                document.getElementById('store-name').innerText = data.name;
-                document.getElementById('hero-title').innerText = `Bienvenue chez ${data.name}`;
-                document.getElementById('store-owner').innerText = `Propriétaire: ${data.user ? data.user.name : 'Inconnu'}`;
-                
-                // Render Products
-                renderProducts(data.products || []);
-            } catch (e) {
-                console.warn("Using Mock Data");
-                document.getElementById('store-name').innerText = "Boutique Démo";
-                renderProducts(MOCK_PRODUCTS);
+        // --- 1. SMART INITIALIZATION ---
+        async function initPage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let storeId = urlParams.get('id');
+
+            // --- THE FIX: AUTO-REDIRECT FOR VENDORS ---
+            // If no ID is in URL, but user is logged in, assume they want THEIR store.
+            if (!storeId && token) {
+                try {
+                    const res = await fetch(`${API}/vendor/store/me`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (res.ok) {
+                        const myStore = await res.json();
+                        storeId = myStore.id;
+                        
+                        // Update the URL in the browser without reloading (UX Improvement)
+                        window.history.replaceState(null, '', `?id=${storeId}`);
+                    }
+                } catch(e) {
+                    console.log("Not a vendor or error fetching store info.");
+                }
             }
-        }
+            // -------------------------------------------
 
-        function renderProducts(products) {
-            const container = document.getElementById('store-products-grid');
-            if(products.length === 0) {
-                container.innerHTML = '<p class="col-span-full text-center text-gray-500">Aucun produit.</p>';
+            if (!storeId) {
+                // If we still have no ID (Client accessed page directly), go back to marketplace
+                alert("Veuillez sélectionner une boutique sur la page d'accueil.");
+                window.location.href = 'index.html';
                 return;
             }
-            container.innerHTML = products.map(p => `
-            <div class="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
-                <div class="aspect-square bg-gray-100 relative overflow-hidden">
-                    <img src="${p.image}" onclick="window.location.href='product-detail.html?id=${p.id}'" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                </div>
-                <div class="p-4">
-                    <h3 onclick="window.location.href='product-detail.html?id=${p.id}'" class="text-gray-900 font-bold mb-2 group-hover:text-purple-600 transition-colors line-clamp-1">${p.name}</h3>
-                    <div class="flex items-center justify-between pt-2 border-t border-gray-50">
-                        <span class="text-lg font-bold text-purple-600">${parseFloat(p.price).toFixed(2)} €</span>
-                        <button class="px-3 py-1.5 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-600 hover:text-white transition-colors text-sm font-medium opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 duration-300">
-                            Ajouter
-                        </button>
-                    </div>
-                </div>
-            </div>
-            `).join('');
+
+            // Proceed to load the store
+            loadStoreDetails(storeId);
         }
 
-        const MOCK_PRODUCTS = [
-            { id: 1, name: 'Casque sans fil Premium', price: '89,99 €', rating: 4.5, image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400' },
-            { id: 2, name: 'T-shirt moderne', price: '29,99 €', rating: 4.8, image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400' },
-            { id: 3, name: 'Décoration murale', price: '45,00 €', rating: 4.3, image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400' },
-            { id: 4, name: 'Montre connectée', price: '199,99 €', rating: 4.7, image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400' },
-            { id: 5, name: 'Sac à main', price: '79,99 €', rating: 4.6, image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400' },
-            { id: 6, name: 'Lampe design', price: '65,00 €', rating: 4.4, image: 'https://images.unsplash.com/photo-1507473888900-52e1adad54cd?w=400' },
-            { id: 7, name: 'Écouteurs Bluetooth', price: '49,99 €', rating: 4.5, image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400' },
-            { id: 8, name: 'Veste en jean', price: '89,00 €', rating: 4.9, image: 'https://images.unsplash.com/photo-1551028919-ac66e62469d1?w=400' },
-        ];
+        // --- 2. FETCH STORE DATA ---
+        async function loadStoreDetails(id) {
+            try {
+                // Fetch Store + Products
+                const res = await fetch(`${API}/stores/${id}`);
+                if (!res.ok) throw new Error("Store not found");
+                
+                const store = await res.json();
 
-        loadStore();
+                // A. Update UI (Banner, Title, Colors)
+                document.title = `${store.name} - ShopCloud`;
+                document.getElementById('nav-store-name').innerText = store.name;
+                document.getElementById('hero-title').innerText = store.name;
+                document.getElementById('hero-desc').innerText = store.description || '';
+
+                // Banner
+                if (store.banner) {
+                    const bannerUrl = store.banner.startsWith('http') 
+                        ? store.banner 
+                        : `http://localhost:8000/storage/${store.banner}`;
+                    document.getElementById('store-banner').src = bannerUrl;
+                }
+
+                // Custom Color (CSS Variable)
+                if (store.primary_color) {
+                    document.documentElement.style.setProperty('--color-primary-600', store.primary_color);
+                }
+
+                // Layout (Grid Columns)
+                const grid = document.getElementById('products-grid');
+                grid.className = 'grid gap-6 '; // Reset base classes
+                if (store.layout === 'grid-2') grid.classList.add('grid-cols-1', 'sm:grid-cols-2');
+                else if (store.layout === 'grid-3') grid.classList.add('grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-3');
+                else grid.classList.add('grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-4'); // Default
+
+                // B. Render Products
+                renderProducts(store.products || []);
+
+            } catch (error) {
+                console.error(error);
+                alert("Impossible de charger la boutique.");
+                window.location.href = 'index.html';
+            }
+        }
+
+        // --- 3. RENDER PRODUCTS ---
+        function renderProducts(products) {
+            const grid = document.getElementById('products-grid');
+            const empty = document.getElementById('empty-state');
+
+            if (products.length === 0) {
+                grid.innerHTML = '';
+                empty.classList.remove('hidden');
+                return;
+            }
+
+            empty.classList.add('hidden');
+            grid.innerHTML = products.map(product => {
+                const imageUrl = product.image 
+                    ? (product.image.startsWith('http') ? product.image : `http://localhost:8000/storage/${product.image}`)
+                    : 'https://via.placeholder.com/300';
+                
+                return `
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 group overflow-hidden flex flex-col h-full">
+                    <div class="aspect-square bg-gray-100 relative overflow-hidden">
+                        <img src="${imageUrl}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        
+                        <div class="absolute bottom-4 right-4 translate-y-12 group-hover:translate-y-0 transition-transform duration-300">
+                            <button onclick="addToCart(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${product.price}, '${imageUrl}')" class="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-gray-900 hover:text-[var(--color-primary-600)] hover:bg-gray-50 transition-colors">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 flex flex-col flex-grow">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-gray-900 line-clamp-1">${product.name}</h3>
+                            <span class="text-[var(--color-primary-600)] font-bold text-sm bg-purple-50 px-2 py-1 rounded-md">
+                                ${parseFloat(product.price).toFixed(2)} €
+                            </span>
+                        </div>
+                        <p class="text-gray-500 text-sm line-clamp-2 mb-4 flex-grow">${product.description || ''}</p>
+                        
+                        <a href="product-detail.html?id=${product.id}" class="w-full py-2.5 border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-colors text-center block">
+                            Voir détails
+                        </a>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // --- 4. CART & SEARCH ---
+        function addToCart(id, name, price, image) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existing = cart.find(item => item.id === id);
+            
+            if(existing) {
+                existing.quantity++;
+            } else {
+                cart.push({ id, name, price, image, quantity: 1 });
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Visual feedback on button
+            const btn = event.currentTarget;
+            btn.innerHTML = '<i class="fas fa-check text-green-500"></i>';
+            setTimeout(() => btn.innerHTML = '<i class="fas fa-plus"></i>', 1500);
+        }
+
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('#products-grid > div');
+            
+            let found = false;
+            cards.forEach(card => {
+                const title = card.querySelector('h3').innerText.toLowerCase();
+                if (title.includes(term)) {
+                    card.style.display = 'flex';
+                    found = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            const empty = document.getElementById('empty-state');
+            if (!found && term !== '') {
+                empty.classList.remove('hidden');
+                empty.querySelector('p').innerText = "Aucun résultat pour cette recherche.";
+            } else {
+                if(cards.length > 0) empty.classList.add('hidden');
+            }
+        });
+
+        // START
+        initPage();
     </script>
 </body>
 </html>

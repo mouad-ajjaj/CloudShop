@@ -16,25 +16,46 @@ class AdminController extends Controller
             'users' => User::count(),
             'stores' => Store::count(),
             'products' => Product::count(),
-            'revenue' => Order::sum('total_amount') // Simplified global revenue
+            'revenue' => Order::where('status', '!=', 'cancelled')->sum('total_amount'),
+            'reports' => 0 // Placeholder for future feature
         ]);
     }
 
-    // User Management
-    public function users() { return User::all(); }
-    public function deleteUser($id) { User::destroy($id); return response()->noContent(); }
+    // User Management (Added withCount for orders)
+    public function users() { 
+        return User::withCount('orders')->latest()->get(); 
+    }
+    
+    public function deleteUser($id) { 
+        User::destroy($id); 
+        return response()->noContent(); 
+    }
 
-    // Store Management
-    public function stores() { return Store::with('user')->get(); }
-    public function deleteStore($id) { Store::destroy($id); return response()->noContent(); }
+    // Store Management (Added withCount for products)
+    public function stores() { 
+        return Store::with('user')->withCount('products')->latest()->get(); 
+    }
+    
+    public function deleteStore($id) { 
+        Store::destroy($id); 
+        return response()->noContent(); 
+    }
 
-    // Product Management
-    public function products() { return Product::with('store')->get(); }
-    public function deleteProduct($id) { Product::destroy($id); return response()->noContent(); }
+    // Product Management (With Store Info)
+    public function products() { 
+        return Product::with('store')->latest()->get(); 
+    }
+    
+    public function deleteProduct($id) { 
+        Product::destroy($id); 
+        return response()->noContent(); 
+    }
 
     public function topStores()
     {
-        // Simple top 5 stores by product count for now
-        return Store::withCount('products')->orderBy('products_count', 'desc')->take(5)->get();
+        return Store::withCount('products')
+                    ->orderBy('products_count', 'desc')
+                    ->take(5)
+                    ->get();
     }
 }

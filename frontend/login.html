@@ -143,6 +143,8 @@
     </div>
 
     <script>
+        const API_URL = "http://localhost:8000/api"; 
+
         // Toggle Password Visibility
         function togglePassword() {
             const passwordInput = document.getElementById('password');
@@ -159,36 +161,57 @@
             }
         }
 
-        // Login Logic (Simulation)
+        // REAL Login Logic
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const btn = e.target.querySelector('button[type="submit"]');
 
-            // Loading State
+            // UI Loading State
             const originalText = btn.innerText;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion...';
             btn.disabled = true;
 
-            // Simulate API Call
-            setTimeout(() => {
-                // Here you would normally fetch('http://localhost:8000/api/login', ...)
-                
-                // Mock Logic for redirection based on email (for demo purposes)
-                if(email.includes('admin')) {
-                    window.location.href = 'admin-dashboard.html';
-                } else if (email.includes('store')) {
-                    window.location.href = 'dashboard.html';
-                } else {
-                    window.location.href = 'index.html';
-                }
-                
-                // Store dummy token
-                localStorage.setItem('token', 'demo-token-123');
-                localStorage.setItem('user', JSON.stringify({ email: email }));
+            try {
+                // 1. Call the API
+                const response = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
 
-            }, 1500);
+                const data = await response.json();
+
+                if (response.ok) {
+                    // 2. Store Token & User Info
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+
+                    // 3. Redirect based on Role
+                    // The 'role' now comes directly from the database via AuthController
+                    if (data.user.role === 'admin') {
+                        window.location.href = 'admin-dashboard.html';
+                    } else if (data.user.role === 'store_owner') {
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        // Default to client home
+                        window.location.href = 'index.html';
+                    }
+                } else {
+                    alert(data.message || "Erreur de connexion");
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                console.error('Login Error:', error);
+                alert("Impossible de contacter le serveur.");
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
         });
     </script>
 </body>

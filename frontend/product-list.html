@@ -6,10 +6,9 @@
     <title>Tous les produits - ShopCloud</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="assets/js/config.js"></script>
     
     <script>
         tailwind.config = {
@@ -21,7 +20,7 @@
                             50: '#f3eefc', 
                             100: '#d8cbf7', 
                             500: '#8e44ad', 
-                            600: '#6f42c1', // Brand Purple
+                            600: '#6f42c1', 
                             700: '#5a32a3' 
                         }
                     }
@@ -30,7 +29,7 @@
         }
     </script>
 </head>
-<body class="bg-gray-50 text-gray-900">
+<body class="bg-gray-50 text-gray-900 font-sans">
 
     <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 py-4">
@@ -41,205 +40,358 @@
                     </div>
                     <span class="text-xl font-bold text-indigo-600 tracking-tight">ShopCloud</span>
                 </a>
+
                 <div class="flex-1 max-w-2xl hidden md:block">
                     <div class="relative">
                         <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" placeholder="Rechercher des produits..." class="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all shadow-sm bg-gray-50 focus:bg-white">
+                        <input type="text" id="header-search" placeholder="Rechercher..." class="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all shadow-sm bg-gray-50 focus:bg-white">
                     </div>
                 </div>
+
                 <div class="flex items-center gap-4">
                     <a href="cart.html" class="relative p-3 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition-colors">
                         <i class="fas fa-shopping-cart text-xl"></i>
-                        <span class="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center border-2 border-white">3</span>
+                        <span id="cart-badge" class="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center border-2 border-white opacity-0 transition-opacity">0</span>
                     </a>
-                    <a href="login.html" class="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all shadow-md shadow-indigo-200 font-medium">
-                        <i class="far fa-user"></i>
-                        <span>Connexion</span>
-                    </a>
+                    <div id="auth-section">
+                        <a href="login.html" class="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all shadow-md shadow-indigo-200 font-medium">
+                            <i class="far fa-user"></i>
+                            <span>Connexion</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </header>
 
     <div class="max-w-7xl mx-auto px-6 py-8">
+        
+        <div class="lg:hidden mb-4">
+            <button onclick="document.getElementById('sidebar').classList.toggle('hidden')" class="w-full py-3 bg-white border border-gray-200 rounded-lg font-bold text-gray-700 shadow-sm">
+                <i class="fas fa-filter mr-2"></i> Afficher les filtres
+            </button>
+        </div>
+
         <div class="flex flex-col lg:flex-row gap-8">
             
-            <aside class="w-full lg:w-64 flex-shrink-0">
+            <aside id="sidebar" class="w-full lg:w-64 flex-shrink-0 hidden lg:block">
                 <div class="bg-white rounded-xl border border-gray-200 p-6 sticky top-24 shadow-sm">
-                    <div class="flex items-center gap-2 mb-6 border-b border-gray-100 pb-4">
-                        <i class="fas fa-sliders-h text-indigo-600"></i>
-                        <h3 class="text-lg font-bold text-gray-900">Filtres</h3>
+                    <div class="flex items-center justify-between mb-6 border-b border-gray-100 pb-4">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-sliders-h text-indigo-600"></i>
+                            <h3 class="text-lg font-bold text-gray-900">Filtres</h3>
+                        </div>
+                        <button onclick="resetFilters()" class="text-xs text-indigo-600 hover:underline font-medium">Réinitialiser</button>
                     </div>
 
                     <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Recherche</label>
-                        <input type="text" placeholder="Mot-clé..." class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-sm">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Mots-clés</label>
+                        <input type="text" id="filter-search" placeholder="Nom du produit..." class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-sm">
                     </div>
 
                     <div class="mb-6">
                         <h4 class="text-sm font-bold text-gray-900 mb-3">Catégories</h4>
-                        <div class="space-y-2.5" id="categories-filter">
-                            </div>
+                        <div class="space-y-2.5 max-h-60 overflow-y-auto pr-2 custom-scrollbar" id="categories-container">
+                            <p class="text-sm text-gray-400">Chargement...</p>
+                        </div>
                     </div>
 
                     <div class="mb-6">
                         <h4 class="text-sm font-bold text-gray-900 mb-3">Prix (€)</h4>
                         <div class="flex items-center gap-2">
-                            <input type="number" placeholder="Min" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-sm">
+                            <input type="number" id="price-min" placeholder="Min" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-sm">
                             <span class="text-gray-400">-</span>
-                            <input type="number" placeholder="Max" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-sm">
+                            <input type="number" id="price-max" placeholder="Max" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-sm">
                         </div>
                     </div>
-
-                    <button class="w-full px-4 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all shadow-md shadow-indigo-200 font-medium text-sm">
-                        Appliquer les filtres
-                    </button>
                 </div>
             </aside>
 
             <main class="flex-1">
-                <div class="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
+                
+                <div class="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4 bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900 mb-1">Tous les produits</h1>
-                        <p class="text-gray-500 text-sm"><span id="result-count">12</span> résultats trouvés</p>
+                        <h1 class="text-xl font-bold text-gray-900">Tous les produits</h1>
+                        <p class="text-gray-500 text-sm"><span id="result-count">0</span> résultats affichés</p>
                     </div>
-                    <select class="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm bg-white shadow-sm cursor-pointer hover:border-indigo-300 transition-colors">
-                        <option>Pertinence</option>
-                        <option>Prix croissant</option>
-                        <option>Prix décroissant</option>
-                        <option>Nouveautés</option>
-                    </select>
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-gray-500">Trier par:</span>
+                        <select id="sort-select" class="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm bg-gray-50 cursor-pointer hover:border-indigo-300 transition-colors font-medium">
+                            <option value="newest">Nouveautés</option>
+                            <option value="price-asc">Prix croissant</option>
+                            <option value="price-desc">Prix décroissant</option>
+                            <option value="name-asc">Nom (A-Z)</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 min-h-[400px]">
+                    <div class="col-span-full text-center py-20">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
                     </div>
+                </div>
 
-                <div class="flex items-center justify-center gap-2 mt-12">
-                    <button class="px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600 transition-colors disabled:opacity-50">Précédent</button>
-                    <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md shadow-indigo-200 font-medium">1</button>
-                    <button class="px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600 transition-colors">2</button>
-                    <button class="px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600 transition-colors">3</button>
-                    <button class="px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600 transition-colors">Suivant</button>
+                <div id="pagination" class="flex items-center justify-center gap-2 mt-12 hidden">
+                    <button onclick="changePage(-1)" id="prev-btn" class="px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">Précédent</button>
+                    <span id="page-info" class="text-sm font-medium text-gray-700 px-4">Page 1</span>
+                    <button onclick="changePage(1)" id="next-btn" class="px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">Suivant</button>
                 </div>
             </main>
         </div>
     </div>
 
     <script>
-        const API_URL = 'http://localhost:8000/api';
+        const API = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:8000/api';
         
-        const categories = [
-            'Électronique', 'Mode', 'Maison', 'Sport', 'Beauté', 'Livres', 'Jouets', 'Auto'
-        ];
+        // State
+        let allProducts = [];
+        let filteredProducts = [];
+        let categories = new Set();
+        
+        // Pagination State
+        let currentPage = 1;
+        const itemsPerPage = 9;
 
-        // 1. Render Filter Categories
-        document.getElementById('categories-filter').innerHTML = categories.map(cat => `
-            <label class="flex items-center gap-3 cursor-pointer group">
-                <div class="relative flex items-center">
-                    <input type="checkbox" value="${cat}" onchange="fetchProducts()" class="peer h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500 transition-all cursor-pointer category-filter">
-                </div>
-                <span class="text-sm text-gray-600 group-hover:text-indigo-600 transition-colors">${cat}</span>
-            </label>
-        `).join('');
-
-        // 2. Mock Data Fallback
-        const MOCK_PRODUCTS = Array.from({ length: 12 }, (_, i) => ({
-            id: i + 1,
-            name: `Produit Premium ${i + 1}`,
-            price: (Math.random() * 100 + 20).toFixed(2),
-            rating: (Math.random() * 2 + 3).toFixed(1),
-            image: i % 3 === 0 
-                ? 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'
-                : i % 3 === 1 
-                ? 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400'
-                : 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400',
-            category: categories[i % categories.length]
-        }));
-
-        // 3. Fetch Logic
-        async function fetchProducts() {
-            const grid = document.getElementById('product-grid');
-            grid.innerHTML = '<div class="col-span-full text-center py-12"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div></div>';
-
-            // Build Query
-            const urlParams = new URLSearchParams(window.location.search);
-            const searchQuery = urlParams.get('q') || '';
+        // --- 1. Initialization ---
+        async function init() {
+            checkAuth();
+            updateCartBadge();
             
-            // Get selected categories
-            const selectedCats = Array.from(document.querySelectorAll('.category-filter:checked')).map(cb => cb.value);
-            
-            let apiUrl = `${API_URL}/products?search=${searchQuery}`;
-            if(selectedCats.length > 0) apiUrl += `&categories=${selectedCats.join(',')}`;
-
             try {
-                const res = await fetch(apiUrl);
-                if (!res.ok) throw new Error('API Error');
-                const data = await res.json();
-                renderProducts(data.length ? data : []);
+                // Fetch ALL products (limit=100 or 500) to allow client-side filtering
+                const res = await fetch(`${API}/products?limit=100`);
+                if(!res.ok) throw new Error("API Error");
+                
+                allProducts = await res.json();
+                
+                // Extract Categories dynamically from products
+                allProducts.forEach(p => {
+                    if(p.category) categories.add(p.category);
+                });
+                renderCategories();
+
+                // Check URL params (e.g. from Homepage)
+                const urlParams = new URLSearchParams(window.location.search);
+                const catParam = urlParams.get('category');
+                const searchParam = urlParams.get('search'); // or 'q'
+
+                if (catParam) {
+                    const checkbox = document.querySelector(`input[value="${catParam}"]`);
+                    if(checkbox) checkbox.checked = true;
+                }
+                if (searchParam) {
+                    document.getElementById('filter-search').value = searchParam;
+                }
+
+                applyFilters();
+
             } catch (e) {
-                console.warn("Using Mock Data", e);
-                // Simple client-side filter for mock data
-                const filtered = MOCK_PRODUCTS.filter(p => 
-                    (searchQuery ? p.name.toLowerCase().includes(searchQuery.toLowerCase()) : true) &&
-                    (selectedCats.length ? selectedCats.includes(p.category) : true)
-                );
-                renderProducts(filtered);
+                console.error(e);
+                document.getElementById('product-grid').innerHTML = '<p class="col-span-full text-center text-red-500">Impossible de charger les produits.</p>';
             }
         }
 
-        function renderProducts(products) {
-            const grid = document.getElementById('product-grid');
-            document.getElementById('result-count').innerText = products.length;
+        // --- 2. Filter & Sort Logic ---
+        function applyFilters() {
+            const searchTerm = document.getElementById('filter-search').value.toLowerCase();
+            const minPrice = parseFloat(document.getElementById('price-min').value) || 0;
+            const maxPrice = parseFloat(document.getElementById('price-max').value) || Infinity;
+            const sortValue = document.getElementById('sort-select').value;
+            
+            // Get checked categories
+            const checkedCats = Array.from(document.querySelectorAll('.cat-checkbox:checked')).map(cb => cb.value);
 
-            if(products.length === 0) {
-                grid.innerHTML = '<div class="col-span-full text-center text-gray-500">Aucun produit trouvé.</div>';
+            // Filter
+            filteredProducts = allProducts.filter(p => {
+                const matchesSearch = p.name.toLowerCase().includes(searchTerm);
+                const matchesCategory = checkedCats.length === 0 || checkedCats.includes(p.category);
+                const matchesPrice = parseFloat(p.price) >= minPrice && parseFloat(p.price) <= maxPrice;
+                return matchesSearch && matchesCategory && matchesPrice;
+            });
+
+            // Sort
+            filteredProducts.sort((a, b) => {
+                const priceA = parseFloat(a.price);
+                const priceB = parseFloat(b.price);
+                
+                if (sortValue === 'price-asc') return priceA - priceB;
+                if (sortValue === 'price-desc') return priceB - priceA;
+                if (sortValue === 'name-asc') return a.name.localeCompare(b.name);
+                // 'newest' uses ID or created_at (assuming higher ID = newer)
+                return b.id - a.id; 
+            });
+
+            // Reset to page 1 after filter change
+            currentPage = 1;
+            renderGrid();
+        }
+
+        // --- 3. Render Functions ---
+        function renderCategories() {
+            const container = document.getElementById('categories-container');
+            if (categories.size === 0) {
+                container.innerHTML = '<p class="text-sm text-gray-400">Aucune catégorie.</p>';
+                return;
+            }
+            
+            // Convert Set to Array and Sort
+            const sortedCats = Array.from(categories).sort();
+            
+            container.innerHTML = sortedCats.map(cat => `
+                <label class="flex items-center gap-3 cursor-pointer group hover:bg-gray-50 p-1 rounded transition-colors">
+                    <div class="relative flex items-center">
+                        <input type="checkbox" value="${cat}" class="cat-checkbox peer h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500 transition-all cursor-pointer">
+                    </div>
+                    <span class="text-sm text-gray-600 group-hover:text-indigo-600 transition-colors">${cat}</span>
+                </label>
+            `).join('');
+
+            // Attach listeners to new checkboxes
+            document.querySelectorAll('.cat-checkbox').forEach(cb => {
+                cb.addEventListener('change', applyFilters);
+            });
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('product-grid');
+            const countSpan = document.getElementById('result-count');
+            const pagination = document.getElementById('pagination');
+
+            countSpan.innerText = filteredProducts.length;
+
+            if (filteredProducts.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-16 bg-gray-50 rounded-xl border border-gray-200 border-dashed">
+                        <i class="fas fa-search text-4xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-500 font-medium">Aucun produit ne correspond à vos critères.</p>
+                        <button onclick="resetFilters()" class="mt-2 text-indigo-600 hover:underline text-sm">Réinitialiser les filtres</button>
+                    </div>`;
+                pagination.classList.add('hidden');
                 return;
             }
 
-            grid.innerHTML = products.map(p => `
-            <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
-                <div class="aspect-[4/3] bg-gray-100 relative overflow-hidden">
-                    <img src="${p.image}" onclick="window.location.href='product-detail.html?id=${p.id}'" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                    <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-md text-xs font-semibold text-gray-700 shadow-sm">${p.category}</span>
-                    <button class="absolute top-3 right-3 p-2 bg-white/90 rounded-full shadow-md text-gray-400 hover:text-red-500 transition-colors backdrop-blur-sm opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 duration-300">
-                        <i class="far fa-heart"></i>
-                    </button>
-                </div>
-                
-                <div class="p-5">
-                    <div class="flex justify-between items-start mb-2">
-                        <h3 onclick="window.location.href='product-detail.html?id=${p.id}'" class="text-gray-900 font-bold text-lg leading-tight group-hover:text-indigo-600 transition-colors line-clamp-1">${p.name}</h3>
-                    </div>
-                    
-                    <div class="flex items-center gap-1 mb-4">
-                        ${Array(5).fill(0).map((_, i) => 
-                            `<i class="fas fa-star text-xs ${i < Math.floor(p.rating) ? 'text-yellow-400' : 'text-gray-300'}"></i>`
-                        ).join('')}
-                        <span class="text-xs text-gray-500 ml-1 font-medium">(${p.rating})</span>
-                    </div>
+            // Pagination Logic
+            const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageItems = filteredProducts.slice(start, end);
 
-                    <div class="flex items-center justify-between pt-3 border-t border-gray-50">
-                        <span class="text-xl font-bold text-indigo-600">${p.price} €</span>
-                        <button onclick="addToCart(${p.id}, '${p.name.replace(/'/g, "\\'")}', ${p.price})" class="px-4 py-2 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-all font-medium text-sm flex items-center gap-2 shadow-sm hover:shadow-md">
-                            <i class="fas fa-shopping-bag text-xs"></i> Ajouter
-                        </button>
+            // Render Items
+            grid.innerHTML = pageItems.map(p => {
+                const img = p.image 
+                    ? (p.image.startsWith('http') ? p.image : `http://localhost:8000/storage/${p.image}`) 
+                    : 'https://via.placeholder.com/300';
+                const price = parseFloat(p.price).toFixed(2);
+
+                return `
+                <div class="bg-white rounded-xl border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer overflow-hidden flex flex-col" onclick="window.location.href='product-detail.html?id=${p.id}'">
+                    <div class="aspect-[4/3] bg-gray-100 relative overflow-hidden">
+                        <img src="${img}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-3 right-3 translate-y-12 group-hover:translate-y-0 transition-transform duration-300">
+                            <button onclick="event.stopPropagation(); addToCart('${p.id}', '${p.name.replace(/'/g, "\\'")}', '${price}', '${img}')" class="w-8 h-8 bg-white/90 rounded-full shadow-md text-gray-500 hover:text-indigo-600 transition-colors flex items-center justify-center backdrop-blur-sm">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-gray-900 leading-tight group-hover:text-indigo-600 transition-colors line-clamp-2">${p.name}</h3>
+                        </div>
+                        <div class="mt-auto flex items-center justify-between pt-3 border-t border-gray-50">
+                            <span class="text-lg font-bold text-indigo-600">${price} €</span>
+                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full truncate max-w-[100px]">${p.category || 'Autre'}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        `).join('');
+                `;
+            }).join('');
+
+            // Update Pagination Controls
+            if (totalPages > 1) {
+                pagination.classList.remove('hidden');
+                document.getElementById('page-info').innerText = `Page ${currentPage} sur ${totalPages}`;
+                document.getElementById('prev-btn').disabled = currentPage === 1;
+                document.getElementById('next-btn').disabled = currentPage === totalPages;
+            } else {
+                pagination.classList.add('hidden');
+            }
         }
 
-        function addToCart(id, name, price) {
+        // --- 4. Utilities ---
+        function changePage(direction) {
+            currentPage += direction;
+            renderGrid();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetFilters() {
+            document.getElementById('filter-search').value = '';
+            document.getElementById('price-min').value = '';
+            document.getElementById('price-max').value = '';
+            document.getElementById('sort-select').value = 'newest';
+            document.querySelectorAll('.cat-checkbox').forEach(cb => cb.checked = false);
+            applyFilters();
+        }
+
+        // --- 5. Event Listeners ---
+        document.getElementById('filter-search').addEventListener('input', applyFilters);
+        document.getElementById('price-min').addEventListener('input', applyFilters);
+        document.getElementById('price-max').addEventListener('input', applyFilters);
+        document.getElementById('sort-select').addEventListener('change', applyFilters);
+        
+        // Link header search to filter search
+        document.getElementById('header-search').addEventListener('input', (e) => {
+            document.getElementById('filter-search').value = e.target.value;
+            applyFilters();
+        });
+
+        // --- 6. Auth & Cart (Standard) ---
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const authSection = document.getElementById('auth-section');
+
+            if (token) {
+                authSection.innerHTML = `
+                    <div class="relative group">
+                        <button class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-bold border border-indigo-200">
+                            ${user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                        </button>
+                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 hidden group-hover:block z-50 overflow-hidden">
+                            <div class="px-4 py-3 bg-gray-50 border-b border-gray-100"><p class="text-sm font-bold truncate">${user.name}</p></div>
+                            ${user.role === 'store_owner' ? '<a href="dashboard.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Ma Boutique</a>' : ''}
+                            ${user.role === 'admin' ? '<a href="admin-dashboard.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Admin</a>' : ''}
+                            <a href="#" onclick="localStorage.clear(); window.location.reload()" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Déconnexion</a>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function updateCartBadge() {
+            const count = (JSON.parse(localStorage.getItem('cart') || '[]')).reduce((acc, item) => acc + item.quantity, 0);
+            const badge = document.getElementById('cart-badge');
+            if (count > 0) { badge.innerText = count; badge.classList.remove('opacity-0'); }
+            else { badge.classList.add('opacity-0'); }
+        }
+
+        function addToCart(id, name, price, image) {
             let cart = JSON.parse(localStorage.getItem('cart') || '[]');
             const existing = cart.find(item => item.id == id);
-            if (existing) { existing.quantity++; } 
-            else { cart.push({ id, name, price, quantity: 1 }); }
+            if (existing) existing.quantity++;
+            else cart.push({ id, name, price, image, quantity: 1 });
             localStorage.setItem('cart', JSON.stringify(cart));
-            alert(`${name} ajouté au panier !`);
+            updateCartBadge();
+            
+            // Visual feedback
+            const btn = event.currentTarget;
+            btn.innerHTML = '<i class="fas fa-check text-green-500"></i>';
+            setTimeout(() => btn.innerHTML = '<i class="fas fa-plus"></i>', 1000);
         }
 
-        // Init
-        fetchProducts();
+        // START
+        init();
+
     </script>
 </body>
 </html>

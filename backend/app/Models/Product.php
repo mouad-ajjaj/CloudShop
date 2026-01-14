@@ -12,16 +12,20 @@ class Product extends Model
     protected $fillable = [
         'store_id',
         'name',
-        'description',
         'price',
         'stock',
-        'image',
-        'category'
+        'category',
+        'description',
+        'image',        // Main Image
+        'images',       // New: Additional Images Array
+        'status'
     ];
 
-    // --- RELATIONSHIPS ---
+    // AUTOMATIC CASTING
+    protected $casts = [
+        'images' => 'array', // Convert JSON <-> Array automatically
+    ];
 
-    // A Product belongs to a Store
     public function store()
     {
         return $this->belongsTo(Store::class);

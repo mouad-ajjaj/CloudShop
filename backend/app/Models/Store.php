@@ -13,18 +13,22 @@ class Store extends Model
         'name',
         'description',
         'banner',
-        'user_id'
+        'user_id',
+        'layout',           // Added
+        'primary_color',    // Added
+        'featured_products' // Added
     ];
 
-    // --- RELATIONSHIPS ---
+    // AUTOMATIC JSON CONVERSION
+    protected $casts = [
+        'featured_products' => 'array',
+    ];
 
-    // A Store belongs to a User (Owner)
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // A Store has many Products
     public function products()
     {
         return $this->hasMany(Product::class);

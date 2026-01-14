@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    // Checkout (Create Order)
+    // Create Order (Checkout)
     public function store(Request $request)
     {
         $request->validate([
@@ -22,25 +22,31 @@ class OrderController extends Controller
             'total' => 'required|numeric'
         ]);
 
+        // Use Transaction for Data Integrity
         return DB::transaction(function () use ($request) {
-            // 1. Create Order
+            
+            // 1. Create the Main Order
             $order = Order::create([
                 'user_id' => Auth::id(),
                 'total_amount' => $request->total,
                 'status' => 'pending',
-                'address' => json_encode($request->address)
+                'address' => is_array($request->address) ? json_encode($request->address) : $request->address
             ]);
 
-            // 2. Create Order Items & Update Stock
+            // 2. Loop through cart items
             foreach ($request->cart as $item) {
+                // Lock the product row to prevent race conditions
                 $product = Product::lockForUpdate()->find($item['id']);
                 
+                // Check Stock
                 if ($product->stock < $item['quantity']) {
-                    throw new \Exception("Product {$product->name} is out of stock.");
+                    throw new \Exception("Le produit {$product->name} est en rupture de stock.");
                 }
 
+                // Decrement Stock
                 $product->decrement('stock', $item['quantity']);
 
+                // Create Order Item
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $product->id,
@@ -53,9 +59,12 @@ class OrderController extends Controller
         });
     }
 
-    // List Customer Orders
+    // List Customer's own orders
     public function index()
     {
-        return Order::with('items.product')->where('user_id', Auth::id())->latest()->get();
+        return Order::where('user_id', Auth::id())
+                    ->with('items.product')
+                    ->latest()
+                    ->get();
     }
 }

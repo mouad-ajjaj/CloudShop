@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter un produit - ShopCloud</title>
+    <title>Gérer le produit - ShopCloud</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -29,38 +29,26 @@
 
                 <nav class="space-y-2">
                     <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
-                        <i class="fas fa-chart-pie w-5 text-center"></i>
-                        <span>Tableau de bord</span>
+                        <i class="fas fa-chart-pie w-5 text-center"></i> <span>Tableau de bord</span>
                     </a>
                     <a href="store-products.html" class="flex items-center gap-3 px-4 py-3 bg-purple-50 text-purple-700 rounded-lg transition-colors font-medium">
-                        <i class="fas fa-box w-5 text-center"></i>
-                        <span>Produits</span>
-                    </a>
-                    <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
-                        <i class="fas fa-shopping-cart w-5 text-center"></i>
-                        <span>Commandes</span>
+                        <i class="fas fa-box w-5 text-center"></i> <span>Produits</span>
                     </a>
                     <a href="store-customization.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
-                        <i class="fas fa-paint-brush w-5 text-center"></i>
-                        <span>Personnalisation</span>
+                        <i class="fas fa-paint-brush w-5 text-center"></i> <span>Personnalisation</span>
                     </a>
-                    
-                    <a href="store-public.html" target="_blank" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
-                        <i class="fas fa-external-link-alt w-5 text-center"></i>
-                        <span>Voir ma boutique</span>
+                    <a href="store-public.html" id="view-store-link" target="_blank" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+                        <i class="fas fa-external-link-alt w-5 text-center"></i> <span>Voir ma boutique</span>
                     </a>
-
                     <a href="index.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium">
-                        <i class="fas fa-home w-5 text-center"></i>
-                        <span>Retour à l'accueil</span>
+                        <i class="fas fa-home w-5 text-center"></i> <span>Retour à l'accueil</span>
                     </a>
                 </nav>
             </div>
             
             <div class="absolute bottom-0 w-full p-6 border-t border-gray-100 bg-white">
                 <a href="#" onclick="logout(event)" class="flex items-center gap-3 text-red-600 hover:bg-red-50 px-4 py-3 rounded-lg transition-colors font-medium">
-                    <i class="fas fa-sign-out-alt w-5 text-center"></i>
-                    <span>Déconnexion</span>
+                    <i class="fas fa-sign-out-alt w-5 text-center"></i> <span>Déconnexion</span>
                 </a>
             </div>
         </aside>
@@ -70,7 +58,7 @@
                 
                 <div class="mb-8">
                     <h1 class="text-3xl font-bold text-gray-900 mb-2" id="page-title">Ajouter un produit</h1>
-                    <p class="text-gray-600">Créez un nouveau produit pour votre boutique</p>
+                    <p class="text-gray-600">Remplissez les informations ci-dessous.</p>
                 </div>
 
                 <div class="bg-white rounded-xl border border-gray-200 p-8 shadow-sm">
@@ -81,11 +69,11 @@
                             <div class="space-y-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Nom du produit *</label>
-                                    <input type="text" id="product-name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all">
+                                    <input type="text" id="product-name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Description *</label>
-                                    <textarea id="product-desc" required rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"></textarea>
+                                    <textarea id="product-desc" required rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"></textarea>
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
@@ -123,17 +111,32 @@
                         </div>
 
                         <div>
-                            <h3 class="text-lg font-bold text-gray-900 mb-4">Image du produit</h3>
-                            <div class="flex gap-4">
-                                <div id="upload-trigger" class="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-purple-500 hover:bg-purple-50 transition-colors relative overflow-hidden bg-gray-50">
-                                    <i class="fas fa-camera text-2xl text-gray-400 mb-1"></i>
-                                    <span class="text-xs text-gray-500">Ajouter</span>
-                                    <img id="image-preview" class="absolute inset-0 w-full h-full object-cover hidden">
+                            <h3 class="text-lg font-bold text-gray-900 mb-4">Images</h3>
+                            
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Image Principale (Vignette)</label>
+                                <div class="flex gap-4 items-start">
+                                    <div id="upload-trigger" class="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-purple-500 hover:bg-purple-50 transition-colors relative overflow-hidden bg-gray-50 flex-shrink-0">
+                                        <i class="fas fa-camera text-2xl text-gray-400 mb-1"></i>
+                                        <span class="text-xs text-gray-500">Ajouter</span>
+                                        <img id="image-preview" class="absolute inset-0 w-full h-full object-cover hidden">
+                                    </div>
+                                    <div class="text-sm text-gray-500 pt-2">
+                                        Cliquez sur le carré pour ajouter une image.<br>
+                                        <span class="text-xs text-gray-400">Max 2 Mo</span>
+                                    </div>
+                                    <input type="file" id="image-input" accept="image/*" class="hidden">
                                 </div>
-                                
-                                <input type="file" id="image-input" accept="image/*" class="hidden">
                             </div>
-                            <p class="text-xs text-gray-500 mt-2">Cliquez sur le carré pour ajouter une image.</p>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Galerie d'images (Max 4)</label>
+                                <input type="file" id="gallery-input" accept="image/*" multiple class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 mb-2">
+                                <p class="text-xs text-gray-500 mb-4">Maintenez la touche Ctrl (ou Cmd) pour sélectionner plusieurs images. Max 2 Mo par image.</p>
+                                
+                                <div id="gallery-preview-container" class="grid grid-cols-4 gap-4">
+                                    </div>
+                            </div>
                         </div>
 
                         <div class="flex items-center justify-end gap-4 pt-6 border-t border-gray-200">
@@ -147,14 +150,14 @@
 
                     </form>
                 </div>
-
             </div>
         </main>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const API_URL = 'http://localhost:8000/api';
+            // Configuration
+            const API = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:8000/api';
             const token = localStorage.getItem('token');
 
             if (!token) {
@@ -162,24 +165,77 @@
                 return;
             }
 
-            // --- 1. Image Upload Logic ---
+            // --- 0. Fix Sidebar Link ---
+            async function fixStoreLink() {
+                try {
+                    const res = await fetch(`${API}/vendor/store/me`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (res.ok) {
+                        const store = await res.json();
+                        const link = document.getElementById('view-store-link');
+                        if (link) link.href = `store-public.html?id=${store.id}`;
+                    }
+                } catch(e) {}
+            }
+            fixStoreLink();
+
+
+            // --- 1. Main Image Upload UI ---
             const trigger = document.getElementById('upload-trigger');
-            const input = document.getElementById('image-input');
-            const preview = document.getElementById('image-preview');
+            const mainInput = document.getElementById('image-input');
+            const mainPreview = document.getElementById('image-preview');
 
-            trigger.addEventListener('click', () => {
-                input.click(); // Trigger hidden input
-            });
+            trigger.addEventListener('click', () => mainInput.click());
 
-            input.addEventListener('change', (e) => {
+            mainInput.addEventListener('change', (e) => {
                 const file = e.target.files[0];
                 if (file) {
-                    preview.src = URL.createObjectURL(file);
-                    preview.classList.remove('hidden');
+                    // Size Check (2MB = 2 * 1024 * 1024 bytes)
+                    if (file.size > 2 * 1024 * 1024) {
+                        alert("L'image est trop volumineuse (Max 2 Mo).");
+                        mainInput.value = ""; // Clear input
+                        return;
+                    }
+                    mainPreview.src = URL.createObjectURL(file);
+                    mainPreview.classList.remove('hidden');
                 }
             });
 
-            // --- 2. Edit Mode Check ---
+            // --- 2. Gallery Upload UI ---
+            const galleryInput = document.getElementById('gallery-input');
+            const galleryContainer = document.getElementById('gallery-preview-container');
+
+            galleryInput.addEventListener('change', (e) => {
+                const files = e.target.files;
+                
+                if (files.length > 4) {
+                    alert("Maximum 4 images supplémentaires.");
+                    galleryInput.value = ""; 
+                    return;
+                }
+
+                // Check sizes
+                for (let i = 0; i < files.length; i++) {
+                    if (files[i].size > 2 * 1024 * 1024) {
+                        alert(`L'image "${files[i].name}" est trop volumineuse (Max 2 Mo).`);
+                        galleryInput.value = "";
+                        return;
+                    }
+                }
+
+                // Show basic preview of what will be uploaded
+                galleryContainer.innerHTML = '';
+                Array.from(files).forEach(file => {
+                    const div = document.createElement('div');
+                    div.className = "w-20 h-20 rounded-lg border border-gray-200 overflow-hidden relative";
+                    div.innerHTML = `<img src="${URL.createObjectURL(file)}" class="w-full h-full object-cover">`;
+                    galleryContainer.appendChild(div);
+                });
+            });
+
+
+            // --- 3. Edit Mode: Load Data ---
             const urlParams = new URLSearchParams(window.location.search);
             const editId = urlParams.get('id');
 
@@ -187,30 +243,47 @@
                 document.getElementById('page-title').innerText = "Modifier le produit";
                 document.getElementById('submit-btn').innerText = "Mettre à jour";
                 
-                fetch(`${API_URL}/vendor/products/${editId}`, {
+                fetch(`${API}/vendor/products/${editId}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 })
                 .then(res => res.json())
                 .then(data => {
+                    // Populate Text Fields
                     document.getElementById('product-name').value = data.name;
                     document.getElementById('product-desc').value = data.description;
                     document.getElementById('product-category').value = data.category;
                     document.getElementById('product-brand').value = data.brand || '';
                     document.getElementById('product-price').value = data.price;
                     document.getElementById('product-stock').value = data.stock;
+                    
+                    // Show Main Image
                     if(data.image) {
-                        preview.src = data.image;
-                        preview.classList.remove('hidden');
+                        const src = data.image.startsWith('http') ? data.image : `http://localhost:8000/storage/${data.image}`;
+                        mainPreview.src = src;
+                        mainPreview.classList.remove('hidden');
+                    }
+
+                    // Show Existing Gallery Images
+                    if(data.images && Array.isArray(data.images) && data.images.length > 0) {
+                        // Append to container (Note: editing clears old images if new ones are uploaded in our simple backend logic)
+                        galleryContainer.innerHTML = data.images.map(img => {
+                            const src = img.startsWith('http') ? img : `http://localhost:8000/storage/${img}`;
+                            return `
+                                <div class="w-20 h-20 rounded-lg border border-gray-200 overflow-hidden relative">
+                                    <img src="${src}" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-black/20 flex items-center justify-center text-white text-xs">Actuel</div>
+                                </div>
+                            `;
+                        }).join('');
                     }
                 })
                 .catch(err => console.error("Load Error:", err));
             }
 
-            // --- 3. Form Submit Logic ---
+            // --- 4. Submit Logic ---
             const form = document.getElementById('product-form');
             
             form.addEventListener('submit', async (e) => {
-                // STOP THE PAGE RELOAD
                 e.preventDefault(); 
                 
                 const btn = document.getElementById('submit-btn');
@@ -227,23 +300,30 @@
                     formData.append('price', document.getElementById('product-price').value);
                     formData.append('stock', document.getElementById('product-stock').value);
 
-                    if (input.files[0]) {
-                        formData.append('image', input.files[0]);
+                    // Main Image
+                    if (mainInput.files[0]) {
+                        formData.append('image', mainInput.files[0]);
                     }
 
-                    let url = `${API_URL}/vendor/products`;
-                    
+                    // Gallery Images
+                    if (galleryInput.files.length > 0) {
+                        for (let i = 0; i < galleryInput.files.length; i++) {
+                            formData.append('images[]', galleryInput.files[i]);
+                        }
+                    }
+
+                    // Determine URL & Method
+                    let url = `${API}/vendor/products`;
                     if (editId) {
-                        url = `${API_URL}/vendor/products/${editId}`;
-                        formData.append('_method', 'PUT'); // Laravel requirement for FormData PUT
+                        url = `${API}/vendor/products/${editId}`;
+                        formData.append('_method', 'PUT'); // Spoof PUT
                     }
 
                     const res = await fetch(url, {
-                        method: 'POST', // Use POST even for updates (due to FormData)
+                        method: 'POST', // Always POST for FormData
                         headers: {
                             'Authorization': `Bearer ${token}`,
                             'Accept': 'application/json'
-                            // Do NOT set Content-Type here, browser does it automatically
                         },
                         body: formData
                     });
@@ -253,8 +333,12 @@
                         window.location.href = 'store-products.html';
                     } else {
                         const errorData = await res.json();
-                        alert("Erreur: " + (errorData.message || "Vérifiez les champs"));
-                        console.error(errorData);
+                        // Handle Laravel Error Messages
+                        let msg = errorData.message || "Erreur inconnue";
+                        if(errorData.errors) {
+                            msg += "\n" + Object.values(errorData.errors).flat().join("\n");
+                        }
+                        alert("Erreur: " + msg);
                     }
 
                 } catch (error) {

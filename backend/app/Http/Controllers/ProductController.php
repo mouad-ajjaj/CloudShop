@@ -9,48 +9,55 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
-    // 1. List all products (Public)
-    public function index()
+    public function index(Request $request)
     {
-        return Product::all();
+        $query = Product::latest();
+        if ($request->has('limit')) $query->limit($request->get('limit'));
+        if ($request->has('search')) $query->where('name', 'like', '%' . $request->get('search') . '%');
+        
+        return $query->get();
     }
 
-    // 2. Show one product (Public)
     public function show($id)
     {
         return Product::findOrFail($id);
     }
 
-    // 3. Create a product (Store Owner only)
+    // CREATE PRODUCT
     public function store(Request $request)
     {
-        // A. Validate inputs
         $request->validate([
             'name' => 'required|string',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'category' => 'required|string',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|max:2048', // 2MB Max
+            'image' => 'nullable|image|max:2048', 
+            'images.*' => 'nullable|image|max:2048' // Validate array of images
         ]);
 
-        // B. Get (or Create) the Store for this User
-        // This fixes the missing 'store_id' error
         $store = Store::firstOrCreate(
             ['user_id' => Auth::id()],
             ['name' => Auth::user()->name . "'s Store"]
         );
 
-        // C. Handle Image Upload
-        $imagePath = null;
+        // 1. Handle Main Image
+        $mainImagePath = 'https://via.placeholder.com/200';
         if ($request->hasFile('image')) {
-            // Save to storage/app/public/products
             $path = $request->file('image')->store('products', 'public');
-            // Generate URL: http://localhost:8000/storage/products/filename.jpg
-            $imagePath = asset('storage/' . $path);
+            $mainImagePath = asset('storage/' . $path);
         }
 
-        // D. Save to Database
+        // 2. Handle Additional Images (Loop)
+        $galleryPaths = [];
+        if ($request->hasFile('images')) {
+            foreach($request->file('images') as $img) {
+                // Limit to 4 images max logic can be here or frontend
+                $path = $img->store('products', 'public');
+                $galleryPaths[] = asset('storage/' . $path);
+            }
+        }
+
         $product = Product::create([
             'store_id' => $store->id,
             'name' => $request->name,
@@ -58,40 +65,53 @@ class ProductController extends Controller
             'stock' => $request->stock,
             'category' => $request->category,
             'description' => $request->description,
-            'image' => $imagePath ?? 'https://via.placeholder.com/200',
+            'image' => $mainImagePath,
+            'images' => $galleryPaths, // Save array
             'status' => 'active'
         ]);
 
         return response()->json($product, 201);
     }
 
-    // 4. Update Product (Vendor & Admin)
+    // UPDATE PRODUCT
     public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
 
-        // Security Check: Ensure the user owns the store that owns the product (or is Admin)
         if ($product->store->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
              return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        $product->update($request->all());
+        // Handle Main Image Update
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public');
+            $product->image = asset('storage/' . $path);
+        }
+
+        // Handle Additional Images Update (Append or Replace logic)
+        // Here we simplify: if new images are sent, we replace the gallery. 
+        if ($request->hasFile('images')) {
+            $galleryPaths = [];
+            foreach($request->file('images') as $img) {
+                $path = $img->store('products', 'public');
+                $galleryPaths[] = asset('storage/' . $path);
+            }
+            $product->images = $galleryPaths;
+        }
+
+        $product->update($request->except(['image', 'images']));
+        $product->save();
         
         return response()->json($product);
     }
 
-    // 5. Delete Product (Vendor & Admin)
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
-        
-        // Security Check: Ensure the user owns the store that owns the product (or is Admin)
         if ($product->store->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
              return response()->json(['message' => 'Unauthorized'], 403);
         }
-
         $product->delete();
-        
-        return response()->json(['message' => 'Deleted successfully']);
+        return response()->noContent();
     }
 }
