@@ -16,18 +16,25 @@ class Product extends Model
         'stock',
         'category',
         'description',
-        'image',        // Main Image
-        'images',       // New: Additional Images Array
+        'image',
+        'images',
         'status'
     ];
 
-    // AUTOMATIC CASTING
     protected $casts = [
-        'images' => 'array', // Convert JSON <-> Array automatically
+        'images' => 'array',
+        'price' => 'decimal:2'
     ];
 
+    // Link to Store
     public function store()
     {
         return $this->belongsTo(Store::class);
+    }
+
+    // Link to Reviews (THIS WAS MISSING)
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }

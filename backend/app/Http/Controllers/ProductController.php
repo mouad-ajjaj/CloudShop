@@ -9,21 +9,39 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
+    // 1. LIST PRODUCTS (Public)
     public function index(Request $request)
     {
-        $query = Product::latest();
-        if ($request->has('limit')) $query->limit($request->get('limit'));
-        if ($request->has('search')) $query->where('name', 'like', '%' . $request->get('search') . '%');
+        // Load 'store' AND 'reviews' so frontend can calculate stars
+        $query = Product::with(['store', 'reviews'])->latest();
+
+        // Limit results
+        if ($request->has('limit')) {
+            $query->limit($request->get('limit'));
+        }
+
+        // Search
+        if ($request->has('search')) {
+            $query->where('name', 'like', '%' . $request->get('search') . '%');
+        }
+
+        // Category Filter
+        if ($request->has('categories')) {
+            $cats = explode(',', $request->get('categories'));
+            $query->whereIn('category', $cats);
+        }
         
         return $query->get();
     }
 
+    // 2. SHOW SINGLE PRODUCT (Public)
     public function show($id)
     {
-        return Product::findOrFail($id);
+        // Get Product + Store + Reviews + User who wrote review
+        return Product::with(['store', 'reviews.user'])->findOrFail($id);
     }
 
-    // CREATE PRODUCT
+    // 3. CREATE PRODUCT (Vendor Only)
     public function store(Request $request)
     {
         $request->validate([
@@ -33,7 +51,7 @@ class ProductController extends Controller
             'category' => 'required|string',
             'description' => 'nullable|string',
             'image' => 'nullable|image|max:2048', 
-            'images.*' => 'nullable|image|max:2048' // Validate array of images
+            'images.*' => 'nullable|image|max:2048'
         ]);
 
         $store = Store::firstOrCreate(
@@ -41,18 +59,15 @@ class ProductController extends Controller
             ['name' => Auth::user()->name . "'s Store"]
         );
 
-        // 1. Handle Main Image
-        $mainImagePath = 'https://via.placeholder.com/200';
+        $mainImagePath = null;
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('products', 'public');
             $mainImagePath = asset('storage/' . $path);
         }
 
-        // 2. Handle Additional Images (Loop)
         $galleryPaths = [];
         if ($request->hasFile('images')) {
             foreach($request->file('images') as $img) {
-                // Limit to 4 images max logic can be here or frontend
                 $path = $img->store('products', 'public');
                 $galleryPaths[] = asset('storage/' . $path);
             }
@@ -66,14 +81,14 @@ class ProductController extends Controller
             'category' => $request->category,
             'description' => $request->description,
             'image' => $mainImagePath,
-            'images' => $galleryPaths, // Save array
+            'images' => $galleryPaths,
             'status' => 'active'
         ]);
 
         return response()->json($product, 201);
     }
 
-    // UPDATE PRODUCT
+    // 4. UPDATE PRODUCT (Vendor Only)
     public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
@@ -82,14 +97,11 @@ class ProductController extends Controller
              return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        // Handle Main Image Update
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('products', 'public');
             $product->image = asset('storage/' . $path);
         }
 
-        // Handle Additional Images Update (Append or Replace logic)
-        // Here we simplify: if new images are sent, we replace the gallery. 
         if ($request->hasFile('images')) {
             $galleryPaths = [];
             foreach($request->file('images') as $img) {
@@ -105,12 +117,15 @@ class ProductController extends Controller
         return response()->json($product);
     }
 
+    // 5. DELETE PRODUCT (Vendor Only)
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
+        
         if ($product->store->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
              return response()->json(['message' => 'Unauthorized'], 403);
         }
+        
         $product->delete();
         return response()->noContent();
     }
