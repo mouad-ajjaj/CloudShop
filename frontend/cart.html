@@ -208,6 +208,7 @@
             document.getElementById('summary-total').innerText = total.toFixed(2) + ' €';
         }
 
+        // --- UPDATED CHECKOUT FUNCTION ---
         function checkout() {
             const cart = JSON.parse(localStorage.getItem('cart') || '[]');
             if(cart.length === 0) {
@@ -219,8 +220,8 @@
                 alert("Veuillez vous connecter pour passer commande.");
                 window.location.href = 'login.html';
             } else {
-                // Here you would integrate the order creation API
-                alert("Redirection vers le paiement... (Fonctionnalité à venir)");
+                // Redirect to checkout page
+                window.location.href = 'checkout.html';
             }
         }
 

@@ -67,11 +67,13 @@
         if (!token) window.location.href = 'login.html';
 
         async function loadProducts() {
-            const res = await fetch(`${API_URL}/admin/products`, { headers: { 'Authorization': `Bearer ${token}` } });
-            if(res.ok) {
-                allProducts = await res.json();
-                renderProducts(allProducts);
-            }
+            try {
+                const res = await fetch(`${API_URL}/admin/products`, { headers: { 'Authorization': `Bearer ${token}` } });
+                if(res.ok) {
+                    allProducts = await res.json();
+                    renderProducts(allProducts);
+                }
+            } catch(e) { console.error(e); }
         }
 
         function renderProducts(products) {
@@ -81,7 +83,7 @@
             tbody.innerHTML = products.map(p => {
                 const img = p.image ? (p.image.startsWith('http') ? p.image : `http://localhost:8000/storage/${p.image}`) : 'https://via.placeholder.com/50';
                 return `
-                    <tr class="hover:bg-gray-50">
+                    <tr class="hover:bg-gray-50 transition-colors">
                         <td class="px-6 py-4 flex items-center gap-3">
                             <img src="${img}" class="w-10 h-10 rounded object-cover border">
                             <span class="font-medium text-gray-900">${p.name}</span>
@@ -90,8 +92,14 @@
                         <td class="px-6 py-4"><span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs">${p.category}</span></td>
                         <td class="px-6 py-4 font-medium">${parseFloat(p.price).toFixed(2)} €</td>
                         <td class="px-6 py-4 ${p.stock < 5 ? 'text-red-600 font-bold' : ''}">${p.stock}</td>
-                        <td class="px-6 py-4">
-                            <button onclick="deleteProduct(${p.id})" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
+                        <td class="px-6 py-4 flex items-center gap-3">
+                            <a href="product-detail.html?id=${p.id}" target="_blank" class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-colors" title="Voir le produit">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            
+                            <button onclick="deleteProduct(${p.id})" class="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-100 hover:text-red-700 transition-colors" title="Supprimer">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </td>
                     </tr>
                 `;
